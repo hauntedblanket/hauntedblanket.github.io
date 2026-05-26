@@ -1,0 +1,11 @@
+HAUNTED BLANKET MASTER CLEAN
+
+This version removes:
+- old moon emoji hero code
+- visible OWNER/admin links
+- old art/music pages
+- duplicate iframe trailer remnants
+- duplicate moon CSS
+
+Use THIS version going forward as the new master base.
+Avoid mixing older ZIP versions back into the project.

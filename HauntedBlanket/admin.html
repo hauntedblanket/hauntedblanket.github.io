@@ -1,0 +1,1673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HAUNTED BLANKET ADMIN</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body
+ class="admin-dashboard">
+  <aside class="admin-sidebar">
+    <div class="admin-brand">
+      <div class="moon">☾</div>
+      <strong>HAUNTED BLANKET</strong>
+      <span>OWNER DASHBOARD</span>
+    </div>
+    <nav>
+      <a href="index.html">VIEW SITE</a>
+      <a href="#dashboard">DASHBOARD</a>
+      <a href="#moviesAdmin">MOVIES</a>
+      <a href="#addMoviePanel">ADD MOVIE</a>
+      <a href="#addGamePanel">ADD GAME</a>
+      <a href="#gamesAdmin">GAMES</a>
+      <a href="#socials">SOCIALS</a>
+      <a href="#design">SITE TEXT</a>
+      <a href="#export">EXPORT</a>
+    </nav>
+  </aside>
+
+  <main class="admin-wrap dashboard-main" id="dashboard">
+    <section class="hero" style="padding:34px 0 26px">
+      <div class="moon">☾</div>
+      <h1>DASHBOARD</h1>
+      <p class="subtitle">MANAGE MOVIES, GAMES, SOCIALS, AND SITE STYLE</p>
+      <div class="admin-status-row">
+        <span class="save-status clean" id="saveStatus">SAVED</span>
+        <button type="button" class="btn mini-btn" id="viewModeToggle" onclick="toggleViewMode()">PUBLIC VIEW</button>
+        <button type="button" class="btn mini-btn" id="quickAddMovieBtn" onclick="showAddPanel('movie')">ADD MOVIE</button>
+        <button type="button" class="btn mini-btn" id="quickAddGameBtn" onclick="showAddPanel('game')">ADD GAME</button>
+        <button type="button" class="btn mini-btn" onclick="openQuickAdd()">QUICK ADD</button>
+        <button type="button" class="btn mini-btn" onclick="downloadNow()">EXPORT DATA.JS</button>
+        <button type="button" class="btn mini-btn" id="densityToggle" onclick="toggleDensity()">COMPACT MODE</button>
+        <button type="button" class="btn mini-btn" onclick="surpriseMe()">SURPRISE ME</button>
+        <span class="undo-status" id="lastExportStatus">NOT EXPORTED THIS SESSION</span>
+        <button type="button" class="btn mini-btn" id="undoBtn" onclick="undoLastAction()" disabled>UNDO</button>
+        <span class="undo-status" id="undoStatus">NO UNDO HISTORY</span>
+        <span class="undo-status">CTRL+V TO PASTE COVER IMAGES</span>
+      </div>
+    </section>
+
+    <section class="panel" id="howto">
+      <div class="section-header">
+        <h2>NO-API SETUP</h2>
+        <p>MANUAL, PRIVATE, SIMPLE</p>
+      </div>
+      <p class="notice">
+        ADD ITEMS BELOW, DRAG AND DROP COVERS OR IMAGES, THEN EXPORT THE UPDATED <strong>DATA.JS</strong> FILE. NO API KEYS OR SUBSCRIPTIONS NEEDED.
+      </p>
+    </section>
+
+    <section class="dashboard-cards">
+      <a class="dash-card" href="#moviesAdmin"><strong>MOVIES</strong><span id="movieCount">0 ITEMS</span></a>
+      <a class="dash-card" href="#gamesAdmin"><strong>GAMES</strong><span id="gameCount">0 ITEMS</span></a>
+      <a class="dash-card" href="#socials"><strong>SOCIALS</strong><span id="socialCount">0 LINKS</span></a>
+      <a class="dash-card" href="#favoritesAdmin"><strong>FAVORITES</strong><span id="favoriteCount">0 ITEMS</span></a>
+      <a class="dash-card" href="#watchlistAdmin"><strong>WATCH LIST</strong><span id="watchlistCount">0 ITEMS</span></a>
+      <a class="dash-card" href="#unratedAdmin"><strong>UNRATED</strong><span id="unratedCount">0 ITEMS</span></a>
+      <a class="dash-card" href="#customSectionsPanel"><strong>SECTIONS</strong><span>CUSTOM GROUPS</span></a>
+      <a class="dash-card" href="#export"><strong>EXPORT</strong><span>DOWNLOAD DATA.JS</span></a>
+    </section>
+
+
+    <section class="panel no-collapse easy-admin-panel" id="easyActions">
+      <div class="section-header"><h2>QUICK ADMIN</h2><p>START HERE</p></div>
+      <div class="easy-action-grid">
+        <a class="easy-action-card" href="#addMoviePanel"><strong>ADD MOVIE</strong><span>POSTER, RATING, BLURB</span></a>
+        <a class="easy-action-card" href="#addGamePanel"><strong>ADD GAME</strong><span>COVER, STATUS, BLURB</span></a>
+        <a class="easy-action-card" href="#socials"><strong>ADD SOCIAL</strong><span>LINKS AND FAV PEOPLE</span></a>
+        <a class="easy-action-card" href="#moviesAdmin"><strong>EDIT EXISTING</strong><span>SEARCH, MANAGE, FORM EDIT</span></a>
+        <button type="button" class="easy-action-card button-card" onclick="saveSettingsAndExport()"><strong>SAVE + DOWNLOAD</strong><span>EXPORT DATA.JS</span></button>
+      </div>
+      <p class="notice easy-reminder">AFTER EDITING: CLICK SAVE + DOWNLOAD DATA.JS, THEN REPLACE YOUR PROJECT DATA.JS.</p>
+    </section>
+
+
+    <section class="panel" style="display:none">
+      <div id="recentlyEditedList"></div>
+    </section>
+
+    <section class="panel live-preview-panel" style="display:none">
+      <div id="sitePreview" style="display:none"></div>
+    </section>
+
+    <section class="panel" id="design" style="margin-top:18px">
+      <div class="section-header"><h2>SITE TEXT</h2><p>EDIT THE WORDS THAT APPEAR ON THE PUBLIC SITE</p></div>
+      <p class="notice">CHANGE THE TEXT BELOW, THEN EXPORT <strong>DATA.JS</strong>. THESE SETTINGS APPLY ACROSS THE PUBLIC SITE.</p>
+      <div class="settings-grid">
+        <label class="field">SITE TITLE<input id="set_siteTitle"></label>
+        <label class="field">HOME SUBTITLE<input id="set_homeSubtitle"></label>
+        <label class="field">COLLECTION HEADING<input id="set_collectionHeading"></label>
+        <label class="field">COLLECTION SUBTITLE<input id="set_collectionSubtitle"></label>
+        <label class="field">RECENTLY ADDED HEADING<input id="set_recentHeading"></label>
+        <label class="field">RECENTLY ADDED SUBTITLE<input id="set_recentSubtitle"></label>
+        <label class="field">FEATURED HEADING<input id="set_featuredHeading"></label>
+        <label class="field">FEATURED SUBTITLE<input id="set_featuredSubtitle"></label>
+        <label class="field">HOME QUOTE<input id="set_quote"></label>
+        <label class="field">FOOTER TEXT<input id="set_footer"></label>
+        <label class="field">MOVIES SUBTITLE<input id="set_moviesSubtitle"></label>
+        <label class="field">MOVIES HEADING<input id="set_moviesHeading"></label>
+        <label class="field">MOVIES FAVORITES HEADING<input id="set_moviesFavoritesHeading"></label>
+        <label class="field">MOVIES REST HEADING<input id="set_moviesAllHeading"></label>
+        <label class="field">GAMES SUBTITLE<input id="set_gamesSubtitle"></label>
+        <label class="field">GAMES HEADING<input id="set_gamesHeading"></label>
+        <label class="field">GAMES FAVORITES HEADING<input id="set_gamesFavoritesHeading"></label>
+        <label class="field">GAMES REST HEADING<input id="set_gamesAllHeading"></label>
+        <label class="field">SOCIALS SUBTITLE<input id="set_socialsSubtitle"></label>
+        <label class="field">SOCIALS HEADING<input id="set_socialsHeading"></label>
+      </div>
+      <div class="button-row" style="margin-top:14px"><button type="button" class="btn" onclick="saveSettingsAndExport()">SAVE SITE TEXT + DOWNLOAD DATA.JS</button><button type="button" class="btn" onclick="alert(getDataText().slice(0, 1200))">VERIFY SITE TEXT SAVE</button></div>
+    </section>
+
+    
+    <section class="admin-grid no-collapse" id="addMediaActions" style="margin-top:18px">
+      <div class="panel no-collapse" id="addMoviePanel">
+        <div class="section-header"><h2>ADD MOVIE</h2><p>CREATE A NEW MOVIE ENTRY</p></div>
+        <label class="field">TITLE<input id="movieTitle" placeholder="MOVIE TITLE"></label>
+        <label class="field">YEAR / LABEL<input id="movieYear" placeholder="2024, WATCH LIST, REWATCH..."></label>
+        <div class="add-cover-drop" id="movieDropZone" tabindex="0">
+          <div id="moviePreviewBox" class="add-cover-preview"><strong>DROP MOVIE POSTER HERE</strong><span>OR CLICK TO UPLOAD</span></div>
+          <input id="movieFile" type="file" accept="image/*" hidden>
+        </div>
+        <label class="field">COVER IMAGE<input id="movieImage" placeholder="IMAGE URL OR PATH"></label>
+        <label class="field">MOOD<input id="movieMood" placeholder="SLOW BURN, FOUND FOOTAGE, COZY HORROR..."></label>
+        <label class="field">RATING<input id="movieRating" placeholder="10/10, MUST WATCH, REWATCH..."></label>
+        <label class="field">TRAILER / VIDEO LINK<input id="movieTrailer" placeholder="YOUTUBE, TRAILER, OFFICIAL SITE..."></label>
+        <label class="field">TAGS<input id="movieTags" placeholder="HORROR, WATCH LIST, LAST WATCHED, COMFORT MOVIE..."></label>
+        <div class="quick-status-row movie-status-buttons">
+          <button type="button" class="chip-btn" onclick="addDedicatedTag('movie','LAST WATCHED')">LAST WATCHED</button>
+          <button type="button" class="chip-btn" onclick="addDedicatedTag('movie','WATCH LIST')">WATCH LIST</button>
+          <button type="button" class="chip-btn" onclick="addDedicatedTag('movie','COMFORT MOVIE')">COMFORT MOVIE</button>
+          <button type="button" class="chip-btn" onclick="addDedicatedTag('movie','HORROR')">HORROR</button>
+        </div>
+        <label class="field">SCREENSHOTS / EXTRA IMAGES<textarea id="movieGallery" placeholder="IMAGE URLS, ONE PER LINE"></textarea></label>
+        <label class="field">BLURB<textarea id="movieDescription" placeholder="YOUR NOTE ABOUT THIS MOVIE..."></textarea></label>
+        <label class="toggle-field"><input id="movieFavorite" type="checkbox"> ADD TO FAVORITES</label>
+        <label class="toggle-field"><input id="movieFeatured" type="checkbox"> ADD TO HOMEPAGE FEATURED</label>
+        <div class="button-row">
+          <button type="button" class="btn" onclick="addMovie()">ADD MOVIE</button>
+          <button type="button" class="btn" onclick="resetMovieForm()">RESET</button>
+        </div>
+      </div>
+
+      <div class="panel no-collapse" id="addGamePanel">
+        <div class="section-header"><h2>ADD GAME</h2><p>CREATE A NEW GAME ENTRY</p></div>
+        <label class="field">TITLE<input id="gameTitle" placeholder="GAME TITLE"></label>
+        <label class="field">YEAR / LABEL<input id="gameYear" placeholder="2024, BACKLOG, CURRENTLY PLAYING..."></label>
+        <div class="add-cover-drop" id="gameDropZone" tabindex="0">
+          <div id="gamePreviewBox" class="add-cover-preview"><strong>DROP GAME COVER HERE</strong><span>OR CLICK TO UPLOAD</span></div>
+          <input id="gameFile" type="file" accept="image/*" hidden>
+        </div>
+        <label class="field">COVER IMAGE<input id="gameImage" placeholder="IMAGE URL OR PATH"></label>
+        <label class="field">MOOD<input id="gameMood" placeholder="COZY, SURVIVAL, SOULSLIKE, HORROR..."></label>
+        <label class="field">RATING<input id="gameRating" placeholder="10/10, MUST PLAY, DROPPED..."></label>
+        <label class="field">TRAILER / VIDEO LINK<input id="gameTrailer" placeholder="YOUTUBE, STEAM, OFFICIAL SITE..."></label>
+        <label class="field">TAGS<input id="gameTags" placeholder="WISHLIST, BACKLOG, CURRENTLY PLAYING..."></label>
+        <div class="quick-status-row game-status-buttons">
+          <button type="button" class="chip-btn" onclick="addDedicatedTag('game','CURRENTLY PLAYING')">CURRENTLY PLAYING</button>
+          <button type="button" class="chip-btn" onclick="addDedicatedTag('game','WISHLIST')">WISHLIST</button>
+          <button type="button" class="chip-btn" onclick="addDedicatedTag('game','BACKLOG')">BACKLOG</button>
+          <button type="button" class="chip-btn" onclick="addDedicatedTag('game','FAVORITE')">FAVORITE</button>
+        </div>
+        <label class="field">SCREENSHOTS / EXTRA IMAGES<textarea id="gameGallery" placeholder="IMAGE URLS, ONE PER LINE"></textarea></label>
+        <label class="field">BLURB<textarea id="gameDescription" placeholder="YOUR NOTE ABOUT THIS GAME..."></textarea></label>
+        <label class="toggle-field"><input id="gameFavorite" type="checkbox"> ADD TO FAVORITES</label>
+        <label class="toggle-field"><input id="gameFeatured" type="checkbox"> ADD TO HOMEPAGE FEATURED</label>
+        <div class="button-row">
+          <button type="button" class="btn" onclick="addGame()">ADD GAME</button>
+          <button type="button" class="btn" onclick="resetGameForm()">RESET</button>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="admin-grid" id="media" style="margin-top:18px">
+      <div class="panel">
+        <div class="section-header"><h2>EDIT SELECTED ITEM</h2><p>USED WHEN YOU CLICK FORM EDIT ON A CARD</p></div>
+        <div class="admin-tools sticky-toolbar">
+          <label class="field">SEARCH LIBRARY<input id="mediaSearch" placeholder="SEARCH TITLE, TAG, MOOD..." oninput="renderAll()"></label>
+          <label class="field">SORT LIBRARY<select id="mediaSort" onchange="renderAll()">
+            <option value="manual">MANUAL ORDER</option>
+            <option value="recent">RECENTLY EDITED</option>
+            <option value="title">TITLE A-Z</option>
+            <option value="year">YEAR / LABEL</option>
+          </select></label>
+          <label class="toggle-field"><input id="showArchived" type="checkbox" onchange="renderAll()"> SHOW ARCHIVED ITEMS</label>
+          <div class="quick-filter-bar" id="quickFilterBar">
+            <button type="button" class="chip-btn" onclick="setQuickFilter('')">ALL</button>
+            <button type="button" class="chip-btn" onclick="setQuickFilter('favorite')">FAVORITES</button>
+            <button type="button" class="chip-btn" onclick="setQuickFilter('featured')">FEATURED</button>
+            <button type="button" class="chip-btn" onclick="setQuickFilter('watchlist')">WATCHLIST</button>
+            <button type="button" class="chip-btn" onclick="setQuickFilter('backlog')">BACKLOG</button>
+            <button type="button" class="chip-btn" onclick="setQuickFilter('missingPoster')">MISSING POSTER</button>
+            <button type="button" class="chip-btn" onclick="setQuickFilter('missingRating')">MISSING RATING</button>
+            <button type="button" class="chip-btn" onclick="setQuickFilter('missingBlurb')">MISSING BLURB</button>
+          </div>
+          <div class="tag-manager" id="tagManager"></div>
+          <div class="tag-presets">
+            <button type="button" class="chip-btn" onclick="addPresetTag('HORROR')">HORROR</button>
+            <button type="button" class="chip-btn" onclick="addPresetTag('COZY')">COZY</button>
+            <button type="button" class="chip-btn" onclick="addPresetTag('WATCH LIST')">WATCH LIST</button>
+            <button type="button" class="chip-btn" onclick="addPresetTag('WISHLIST')">WISHLIST</button>
+            <button type="button" class="chip-btn" onclick="addPresetTag('BACKLOG')">BACKLOG</button>
+            <button type="button" class="chip-btn" onclick="addPresetTag('COMPLETED')">COMPLETED</button>
+            <button type="button" class="chip-btn" onclick="addPresetTag('FAVORITE')">FAVORITE</button>
+          </div>
+        </div>
+        <label class="field">TITLE<input id="title" placeholder="SILENT HILL 2, THE WITCH, RESIDENT EVIL 2..."></label>
+        <label class="field">TYPE<select id="type"><option value="movie">MOVIE</option><option value="game">GAME</option></select></label>
+        <label class="field">YEAR / LABEL<input id="year" placeholder="2015, GAME, BACKLOG..."></label>
+        <label class="field">POSTER / COVER</label>
+        <div class="poster-drop-zone" id="coverDropZone" role="button" tabindex="0" aria-label="DRAG AND DROP A COVER IMAGE OR CLICK TO UPLOAD">
+          <input id="coverFile" class="hidden-file" type="file" accept="image/*">
+          <div class="poster-preview-box" id="coverPreviewBox"><div class="poster-placeholder"><strong>DROP COVER HERE</strong><span>OR CLICK TO UPLOAD</span></div></div>
+        </div>
+        <label class="field">IMAGE URL / PATH<input id="image" placeholder="OPTIONAL: IMAGES/MY-COVER.WEBP OR HTTPS://..."></label>
+        <label class="field">MOOD<input id="mood" placeholder="RAINY NIGHT, SURVIVAL PANIC, COZY REPLAY..."></label>
+        <label class="field">RATING<input id="rating" placeholder="10/10, 5 STARS, A+, FAVORITE..."></label>
+        <label class="field">TRAILER / VIDEO LINK<input id="trailer" placeholder="YOUTUBE, TRAILER, STEAM, OFFICIAL SITE..."></label>
+        <label class="field">SCREENSHOTS / EXTRA IMAGES<textarea id="gallery" placeholder="PASTE IMAGE URLS, ONE PER LINE"></textarea></label>
+        <label class="field">TAGS<input id="tags" placeholder="HORROR, COZY, FAVORITE, BACKLOG"></label>
+        <label class="field">BLURB<textarea id="description" placeholder="WRITE YOUR OWN SHORT NOTE..."></textarea></label>
+        <label class="toggle-field"><input id="favorite" type="checkbox"> ADD TO FAVORITES SECTION</label>
+        <label class="toggle-field"><input id="featured" type="checkbox"> ADD TO HOMEPAGE FEATURED PICKS</label>
+        <div class="button-row"><button type="button" class="btn" id="saveEntryBtn" onclick="addEntry()">ADD ENTRY</button><button type="button" class="btn" onclick="resetForm()">RESET</button></div>
+      </div>
+    </section>
+
+    <section class="admin-grid" style="margin-top:18px">
+    </section>
+
+    <section class="panel" id="collectionHealthPanel" style="margin-top:18px">
+      <div class="section-header"><h2>COLLECTION HEALTH</h2><p>UNFINISHED OR INCOMPLETE ENTRIES</p></div>
+      <div class="health-grid" id="healthGrid"></div>
+    </section>
+
+    
+<section class="panel no-collapse" id="homepageControls">
+  <div class="section-header">
+    <h2>HOME PAGE CONTROLS</h2>
+    <p>CONTROL FEATURED CONTENT</p>
+  </div>
+
+  <div class="dashboard-grid compact-dashboard-grid">
+    <div class="dashboard-mini-card">
+      <strong>CURRENTLY PLAYING</strong>
+      <span>SET USING TAG:</span>
+      <code>CURRENTLY PLAYING</code>
+    </div>
+
+    <div class="dashboard-mini-card">
+      <strong>LAST WATCHED</strong>
+      <span>SET USING TAG:</span>
+      <code>LAST WATCHED</code>
+    </div>
+
+    <div class="dashboard-mini-card">
+      <strong>FEATURED MOVIE</strong>
+      <span>ENABLE FEATURED TOGGLE</span>
+    </div>
+
+    <div class="dashboard-mini-card">
+      <strong>FEATURED GAME</strong>
+      <span>ENABLE FEATURED TOGGLE</span>
+    </div>
+  </div>
+</section>
+
+
+<div class="admin-reminder">
+TIP: USE SEARCH TO QUICKLY FIND MOVIES, GAMES, OR SOCIALS TO EDIT.
+</div>
+
+<section class="panel media-library" id="favoritesFocusPanel" style="margin-top:18px">
+      <div class="section-header"><h2>FAVORITES FOCUS</h2><p>YOUR MOST IMPORTANT ENTRIES</p></div>
+      <div class="poster-wall compact-wall" id="favoritesFocusGrid"></div>
+    </section>
+
+    <section class="panel media-library" id="customSectionsPanel" style="margin-top:18px">
+      <div class="section-header"><h2>CUSTOM SECTIONS</h2><p>QUICK VIEWS BASED ON TAGS</p></div>
+      <p class="notice">USE THESE TAGS TO CREATE READY-MADE COLLECTIONS: CURRENTLY PLAYING, OCTOBER WATCHES, COMFORT MOVIE, BEST ATMOSPHERE.</p>
+      <div class="custom-section-grid">
+        <div>
+          <h3 class="mini-heading">CURRENTLY PLAYING</h3>
+          <div class="poster-wall compact-wall" id="currentlyPlayingGrid"></div>
+        </div>
+        <div>
+          <h3 class="mini-heading">OCTOBER WATCHES</h3>
+          <div class="poster-wall compact-wall" id="octoberWatchesGrid"></div>
+        </div>
+        <div>
+          <h3 class="mini-heading">COMFORT PICKS</h3>
+          <div class="poster-wall compact-wall" id="comfortPicksGrid"></div>
+        </div>
+        <div>
+          <h3 class="mini-heading">BEST ATMOSPHERE</h3>
+          <div class="poster-wall compact-wall" id="atmosphereGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel media-library" id="unratedAdmin" style="margin-top:18px">
+      <div class="section-header"><h2>UNRATED ITEMS</h2><p>ITEMS MISSING RATINGS</p></div>
+      <div class="poster-wall compact-wall" id="unratedGrid"></div>
+    </section>
+
+    <section class="panel media-library" id="homepageManager" style="margin-top:18px">
+      <div class="section-header"><h2>HOMEPAGE MANAGER</h2><p>VISUALLY MANAGE FEATURED AND FAVORITES</p></div>
+      <div class="home-manager-grid">
+        <div>
+          <h3 class="mini-heading">FEATURED PICKS</h3>
+          <div class="poster-wall compact-wall" id="featuredManagerGrid"></div>
+        </div>
+        <div>
+          <h3 class="mini-heading">FAVORITES</h3>
+          <div class="poster-wall compact-wall" id="favoritesManagerGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel media-library" id="favoritesAdmin" style="margin-top:18px">
+      <div class="section-header"><h2>FAVORITES</h2><p>ALL FAVORITE MOVIES AND GAMES</p></div>
+      <div class="poster-wall" id="favoriteDraftGrid"></div>
+    </section>
+
+    <section class="panel media-library" id="watchlistAdmin" style="margin-top:18px">
+      <div class="section-header"><h2>WATCH LIST / WISHLIST</h2><p>ITEMS TAGGED WATCH LIST OR WISHLIST</p></div>
+      <div class="poster-wall" id="watchlistDraftGrid"></div>
+    </section>
+
+    <section class="panel no-collapse" id="editExistingGuide" style="margin-top:18px">
+      <div class="section-header"><h2>EDIT EXISTING ITEMS</h2><p>HOW TO CHANGE SOMETHING ALREADY ADDED</p></div>
+      <div class="admin-help-steps">
+        <p><strong>1.</strong> FIND THE MOVIE OR GAME BELOW.</p>
+        <p><strong>2.</strong> OPEN <strong>MANAGE</strong>.</p>
+        <p><strong>3.</strong> CLICK <strong>FORM EDIT</strong>.</p>
+        <p><strong>4.</strong> MAKE CHANGES, THEN SAVE + DOWNLOAD DATA.JS.</p>
+      </div>
+    </section>
+
+    <section class="panel media-library" id="moviesAdmin" style="margin-top:18px">
+      <div class="notice">EDIT EXISTING: open MANAGE on a card, then click FORM EDIT.</div>
+      <div class="section-header"><h2>MOVIES LIBRARY</h2><p>EDIT, FAVORITE, FEATURE, OR REMOVE</p></div>
+      <div class="bulk-actions" id="bulkMoviesControls">
+        <button type="button" class="btn" onclick="selectAllType('movie')">SELECT ALL MOVIES</button>
+        <button type="button" class="btn" onclick="clearSelection()">CLEAR</button>
+        <button type="button" class="btn" onclick="bulkFavorite()">FAVORITE SELECTED</button>
+        <button type="button" class="btn" onclick="bulkFeatured()">FEATURE SELECTED</button>
+        <button type="button" class="btn" onclick="bulkAddTag()">ADD TAG</button>
+        <button type="button" class="btn danger-btn" onclick="bulkDelete()">DELETE SELECTED</button>
+      </div>
+      <div class="poster-wall" id="moviesDraftGrid"></div>
+    </section>
+
+    <section class="panel media-library" id="gamesAdmin" style="margin-top:18px">
+      <div class="section-header"><h2>GAMES LIBRARY</h2><p>EDIT, FAVORITE, FEATURE, OR REMOVE</p></div>
+      <div class="bulk-actions" id="bulkGamesControls">
+        <button type="button" class="btn" onclick="selectAllType('game')">SELECT ALL GAMES</button>
+        <button type="button" class="btn" onclick="clearSelection()">CLEAR</button>
+        <button type="button" class="btn" onclick="bulkFavorite()">FAVORITE SELECTED</button>
+        <button type="button" class="btn" onclick="bulkFeatured()">FEATURE SELECTED</button>
+        <button type="button" class="btn" onclick="bulkAddTag()">ADD TAG</button>
+        <button type="button" class="btn danger-btn" onclick="bulkDelete()">DELETE SELECTED</button>
+      </div>
+      <div class="poster-wall" id="gamesDraftGrid"></div>
+    </section>
+    
+    <section class="panel no-collapse" id="socials" style="margin-top:18px">
+      <div class="section-header"><h2>ADD SOCIAL LINK</h2><p>MY LINKS AND FAV PEOPLE</p></div>
+
+      <label class="field">NAME<input id="socialName" placeholder="YOUTUBE, SPOTIFY, CREATOR NAME..."></label>
+      <label class="field">PLATFORM<input id="socialPlatform" placeholder="YOUTUBE, TWITCH, SPOTIFY, INSTAGRAM..."></label>
+      <label class="field">TYPE<input id="socialType" placeholder="MY LINK, CREATOR, STREAMER, PAGE..."></label>
+      <label class="field">URL<input id="socialUrl" placeholder="HTTPS://..."></label>
+      <label class="field">CATEGORY<select id="socialCategory">
+        <option value="my-link">MY LINK</option>
+        <option value="creator">FAV PEOPLE</option>
+      </select></label>
+      <label class="field">AVATAR / IMAGE<input id="socialAvatar" placeholder="IMAGE URL"></label>
+      <label class="field">NOTES<textarea id="socialNotes" placeholder="WHY YOU SAVED THIS LINK..."></textarea></label>
+
+      <div class="button-row">
+        <button type="button" class="btn" id="socialSaveBtn" onclick="saveSocial()">ADD SOCIAL</button>
+        <button type="button" class="btn" id="socialResetBtn" onclick="resetSocialForm()">RESET</button>
+      </div>
+    </section>
+
+    <section class="panel" style="margin-top:18px"><div class="section-header"><h2>SAVED SOCIAL LINKS</h2><p>PREVIEW OF LINKS YOU HAVE ADDED</p></div><div class="button-row" style="margin-bottom:14px"><a class="btn" href="#socials">ADD / EDIT SOCIAL LINK</a></div><div class="social-draft-list" id="socialDraftList"></div></section>
+
+    <section class="panel" id="backupPanel" style="margin-top:18px">
+      <div class="section-header"><h2>BACKUPS</h2><p>AUTO-CREATED WHEN EXPORTING DATA.JS</p></div>
+      <p class="notice">EVERY EXPORT ALSO DOWNLOADS A BACKUP FILE. KEEP THOSE BACKUPS SOMEWHERE SAFE.</p>
+      <div class="button-row"><button type="button" class="btn" onclick="downloadBackupOnly()">DOWNLOAD BACKUP NOW</button></div>
+      <div class="backup-list" id="backupList"></div>
+    </section>
+
+    <section class="panel" id="deployGuidePanel" style="margin-top:18px">
+      <div class="section-header"><h2>DEPLOY CHECKLIST</h2><p>STATIC SITE EXPORT WORKFLOW</p></div>
+      <div class="deploy-checklist">
+        <p>1. CLICK <strong>DOWNLOAD DATA.JS</strong>.</p>
+        <p>2. REPLACE THE OLD <strong>DATA.JS</strong> IN YOUR SITE FOLDER.</p>
+        <p>3. KEEP THE REST OF THE FILES TOGETHER: INDEX, MOVIES, GAMES, SOCIALS, STYLE, SITE, ADMIN.</p>
+        <p>4. UPLOAD THE WHOLE FOLDER TO NETLIFY, GITHUB PAGES, OR YOUR HOST.</p>
+      </div>
+    </section>
+
+    <section class="panel" id="export" style="margin-top:18px">
+      <div class="section-header"><h2>EXPORT DATA</h2><p>REPLACE YOUR DATA.JS WITH THIS</p></div>
+      <p class="notice">AFTER ADDING ITEMS, CLICK EXPORT. SAVE THE DOWNLOADED <strong>DATA.JS</strong> FILE INTO YOUR SITE FOLDER, REPLACING THE OLD ONE. THEN REFRESH <strong>INDEX.HTML</strong>.</p>
+      <div class="button-row"><button type="button" class="btn" onclick="exportData()">DOWNLOAD DATA.JS</button><button type="button" class="btn" onclick="copyData()">COPY DATA.JS TEXT</button><button type="button" class="btn" onclick="clearDraft()">CLEAR DRAFT</button></div>
+      <pre class="codebox" id="codePreview"></pre>
+    </section>
+  </main>
+
+
+  <div class="admin-modal" id="quickAddModal" aria-hidden="true">
+    <div class="admin-modal-backdrop" onclick="closeQuickAdd()"></div>
+    <section class="admin-modal-card">
+      <button type="button" class="admin-modal-close" onclick="closeQuickAdd()" aria-label="Close">×</button>
+      <div class="section-header"><h2>QUICK ADD</h2><p>FAST BACKLOG ENTRY</p></div>
+      <label class="field">TITLE<input id="quickTitle" placeholder="TITLE"></label>
+      <label class="field">TYPE<select id="quickType"><option value="movie">MOVIE</option><option value="game">GAME</option></select></label>
+      <label class="field">YEAR / LABEL<input id="quickYear" placeholder="2024, BACKLOG, TO WATCH..."></label>
+      <label class="field">POSTER / COVER<input id="quickImage" placeholder="IMAGE URL / PATH"></label>
+      <label class="field">TAGS<input id="quickTags" placeholder="HORROR, WATCH LIST, WISHLIST..."></label>
+      <label class="field">RATING<input id="quickRating" placeholder="10/10, 5 STARS..."></label>
+      <label class="field">TRAILER / VIDEO LINK<input id="quickTrailer" placeholder="YOUTUBE, TRAILER, STEAM..."></label>
+      <label class="field">SCREENSHOTS / EXTRA IMAGES<textarea id="quickGallery" placeholder="IMAGE URLS, ONE PER LINE"></textarea></label>
+      <label class="field">BLURB<textarea id="quickDescription" placeholder="SHORT NOTE..."></textarea></label>
+      <div class="button-row"><button type="button" class="btn" onclick="saveQuickAdd()">SAVE QUICK ADD</button></div>
+    </section>
+  </div>
+
+  <script src="data.js"></script>
+<script>
+  const STORAGE = 'hauntedBlanketDraftDataManualV2';
+  const original = window.HAUNTED_BLANKET_DATA || { media: [], socials: [], settings: {} };
+  let draft = JSON.parse(localStorage.getItem(STORAGE) || 'null') || structuredClone(original);
+
+  draft.media ||= [];
+  draft.socials ||= [];
+  draft.settings ||= {};
+
+  let editingIndex = -1;
+  let editingSocialIndex = -1;
+  let uploadedCoverData = '';
+  let movieCoverData = '';
+  let gameCoverData = '';
+  let selectedMedia = new Set();
+  let activeTagFilter = '';
+  let quickFilter = '';
+  let compactMode = false;
+  let publicViewMode = false;
+  let dirty = false;
+  const undoStack = [];
+
+  const DEFAULT_SETTINGS = {
+    siteTitle: 'HAUNTED BLANKET',
+    homeSubtitle: 'COZY THINGS FOR SLEEPLESS NIGHTS',
+    collectionHeading: 'COLLECTION',
+    collectionSubtitle: 'EXPLORE THE COLLECTION',
+    recentHeading: 'RECENTLY ADDED',
+    recentSubtitle: 'NEWEST MOVIES AND GAMES',
+    featuredHeading: 'FEATURED PICKS',
+    featuredSubtitle: 'MOVIES AND GAMES FOR LATE NIGHTS',
+    quote: 'EVERY NIGHT HAS A STORY.',
+    footer: 'HAUNTED BLANKET',
+    moviesSubtitle: '',
+    moviesHeading: 'MOVIES',
+    moviesFavoritesHeading: 'FAVORITE MOVIES',
+    moviesAllHeading: 'ALL MOVIES',
+    gamesSubtitle: '',
+    gamesHeading: 'GAMES',
+    gamesFavoritesHeading: 'FAVORITE GAMES',
+    gamesAllHeading: 'ALL GAMES',
+    socialsSubtitle: 'CREATORS, STREAMERS, PAGES, AND LINKS',
+    socialsHeading: 'SOCIALS'
+  };
+  const SETTING_KEYS = Object.keys(DEFAULT_SETTINGS);
+
+  function $(id) { return document.getElementById(id); }
+
+  function escapeHtml(text = '') {
+    return String(text).replace(/[&<>'"]/g, c => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+    }[c]));
+  }
+
+  function normalizeUrl(url = '') {
+    const trimmed = String(url || '').trim();
+    if (!trimmed) return '';
+    return trimmed.startsWith('http://') || trimmed.startsWith('https://') ? trimmed : `https://${trimmed}`;
+  }
+
+  function parseGalleryInput(value = '') {
+    return String(value || '').split(/\n+/).map(v => v.trim()).filter(Boolean);
+  }
+
+  function galleryToInput(value) {
+    return Array.isArray(value) ? value.join('\n') : '';
+  }
+
+  
+  function collectSettingsFromVisibleFields() {
+    draft.settings ||= {};
+    document.querySelectorAll('[id^="set_"]').forEach(input => {
+      const key = input.id.replace(/^set_/, '');
+      draft.settings[key] = input.type === 'checkbox' ? input.checked : input.value;
+    });
+  }
+
+  function mergedSettings() {
+    return { ...DEFAULT_SETTINGS, ...(draft.settings || {}) };
+  }
+
+  function populateSettingsForm() {
+    const current = mergedSettings();
+    SETTING_KEYS.forEach(key => {
+      const input = $('set_' + key);
+      if (!input) return;
+      input.value = current[key] ?? '';
+    });
+  }
+
+  function setDirty(value) {
+    dirty = value;
+    const badge = $('saveStatus');
+    if (badge) {
+      badge.textContent = dirty ? 'UNEXPORTED CHANGES' : 'SAVED';
+      badge.classList.toggle('dirty', dirty);
+      badge.classList.toggle('clean', !dirty);
+    }
+  }
+
+  function save(markDirty = true) {
+    localStorage.setItem(STORAGE, JSON.stringify(draft));
+    if (markDirty) setDirty(true);
+    renderAll();
+  }
+
+  function getDataText() {
+    return 'window.HAUNTED_BLANKET_DATA = ' + JSON.stringify(draft, null, 2) + ';\n';
+  }
+
+  function renderCode() {
+    if ($('codePreview')) $('codePreview').textContent = getDataText();
+  }
+
+  function downloadFile(filename, text) {
+    const blob = new Blob([text], { type: 'application/javascript' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+
+  function exportData() {
+    collectSettingsFromVisibleFields();
+    localStorage.setItem(STORAGE, JSON.stringify(draft));
+
+    const dataText = getDataText();
+    const blob = new Blob([dataText], { type: 'application/javascript' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'data.js';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+
+    setDirty(false);
+    const last = $('lastExportStatus');
+    if (last) last.textContent = 'LAST EXPORTED: ' + new Date().toLocaleTimeString();
+  }
+
+  function downloadNow() {
+    exportData();
+  }
+
+  function copyData() {
+    navigator.clipboard.writeText(getDataText()).then(() => alert('COPIED DATA.JS TEXT.'));
+  }
+
+  function saveSettingsFromForm(showAlert = true) {
+    collectSettingsFromVisibleFields();
+    save();
+    populateSettingsForm();
+    if (showAlert) alert('SITE TEXT SAVED. CLICK DOWNLOAD DATA.JS WHEN READY.');
+  }
+
+  function saveSettingsAndExport() {
+    collectSettingsFromVisibleFields();
+    localStorage.setItem(STORAGE, JSON.stringify(draft));
+    renderAll();
+    exportData();
+    alert('SITE TEXT SAVED. DATA.JS HAS BEEN DOWNLOADED.');
+  }
+
+  function resetSettingsForm() {
+    if (!confirm('RESET SITE TEXT TO DEFAULTS?')) return;
+    draft.settings = structuredClone(DEFAULT_SETTINGS);
+    populateSettingsForm();
+    save();
+  }
+
+  function clearDraft() {
+    if (!confirm('CLEAR ADMIN DRAFT AND RELOAD CURRENT DATA.JS?')) return;
+    localStorage.removeItem(STORAGE);
+    draft = structuredClone(original);
+    draft.media ||= [];
+    draft.socials ||= [];
+    draft.settings ||= {};
+    selectedMedia = new Set();
+    editingIndex = -1;
+    editingSocialIndex = -1;
+    populateSettingsForm();
+    save();
+  }
+
+  function pushUndo(label = 'CHANGE') {
+    undoStack.push({ label, snapshot: structuredClone(draft) });
+    if (undoStack.length > 20) undoStack.shift();
+    updateUndoStatus();
+  }
+
+  function updateUndoStatus() {
+    const btn = $('undoBtn');
+    const status = $('undoStatus');
+    const last = undoStack[undoStack.length - 1];
+    if (btn) btn.disabled = !last;
+    if (status) status.textContent = last ? `CAN UNDO: ${last.label}` : 'NO UNDO HISTORY';
+  }
+
+  function undoLastAction() {
+    const last = undoStack.pop();
+    if (!last) return;
+    draft = structuredClone(last.snapshot);
+    draft.media ||= [];
+    draft.socials ||= [];
+    draft.settings ||= {};
+    localStorage.setItem(STORAGE, JSON.stringify(draft));
+    setDirty(true);
+    renderAll();
+    updateUndoStatus();
+  }
+
+  function timestampSlug() {
+    const d = new Date();
+    const pad = n => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}_${pad(d.getHours())}-${pad(d.getMinutes())}-${pad(d.getSeconds())}`;
+  }
+
+  function downloadBackupOnly() {
+    const filename = `data-backup-${timestampSlug()}.js`;
+    downloadFile(filename, getDataText());
+    const records = JSON.parse(localStorage.getItem('hauntedBlanketBackupRecords') || '[]');
+    records.unshift({ filename, time: new Date().toLocaleString() });
+    localStorage.setItem('hauntedBlanketBackupRecords', JSON.stringify(records.slice(0, 12)));
+    renderBackupList();
+  }
+
+  function renderBackupList() {
+    const box = $('backupList');
+    if (!box) return;
+    const records = JSON.parse(localStorage.getItem('hauntedBlanketBackupRecords') || '[]');
+    box.innerHTML = records.length
+      ? records.map(r => `<div class="backup-row"><strong>${escapeHtml(r.filename)}</strong><span>${escapeHtml(r.time)}</span></div>`).join('')
+      : '<p class="notice">NO BACKUPS DOWNLOADED YET.</p>';
+  }
+
+  
+  function compressImageFile(file, maxWidth = 1000, quality = 0.82) {
+    return new Promise(resolve => {
+      if (!file || !file.type || !file.type.startsWith('image/')) return resolve(null);
+
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => {
+          const scale = Math.min(1, maxWidth / img.width);
+          const canvas = document.createElement('canvas');
+          canvas.width = Math.round(img.width * scale);
+          canvas.height = Math.round(img.height * scale);
+
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+          resolve(canvas.toDataURL('image/jpeg', quality));
+        };
+        img.onerror = () => resolve(reader.result);
+        img.src = reader.result;
+      };
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function fileToOptimizedDataUrl(file) {
+    const optimized = await compressImageFile(file);
+    return optimized;
+  }
+
+  
+  function setupDedicatedCoverDrop(kind) {
+    const zone = $(kind + 'DropZone');
+    const fileInput = $(kind + 'File');
+    const preview = $(kind + 'PreviewBox');
+    const imageInput = $(kind + 'Image');
+    if (!zone || !fileInput || !preview) return;
+
+    function setData(dataUrl) {
+      if (kind === 'movie') movieCoverData = dataUrl;
+      else gameCoverData = dataUrl;
+
+      if (imageInput) imageInput.value = '';
+      preview.innerHTML = `<img class="poster" src="${dataUrl}" alt="${kind} cover preview">`;
+    }
+
+    async function handle(file) {
+      if (!file || !file.type.startsWith('image/')) return alert('PLEASE CHOOSE AN IMAGE FILE.');
+      const dataUrl = typeof fileToOptimizedDataUrl === 'function'
+        ? await fileToOptimizedDataUrl(file)
+        : await new Promise(resolve => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.readAsDataURL(file);
+          });
+
+      setData(dataUrl);
+    }
+
+    zone.addEventListener('click', () => fileInput.click());
+    zone.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        fileInput.click();
+      }
+    });
+
+    fileInput.addEventListener('change', e => handle(e.target.files && e.target.files[0]));
+    zone.addEventListener('dragover', e => {
+      e.preventDefault();
+      zone.classList.add('drag-over');
+    });
+    zone.addEventListener('dragleave', e => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+    });
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      handle(e.dataTransfer.files && e.dataTransfer.files[0]);
+    });
+
+    if (imageInput) {
+      imageInput.addEventListener('input', e => {
+        if (kind === 'movie') movieCoverData = '';
+        else gameCoverData = '';
+
+        const src = e.target.value.trim();
+        preview.innerHTML = src
+          ? `<img class="poster" src="${escapeHtml(src)}" alt="${kind} cover preview">`
+          : `<strong>DROP ${kind.toUpperCase()} COVER HERE</strong><span>OR CLICK TO UPLOAD</span>`;
+      });
+    }
+  }
+
+  function resetDedicatedCover(kind) {
+    const preview = $(kind + 'PreviewBox');
+    const fileInput = $(kind + 'File');
+
+    if (kind === 'movie') movieCoverData = '';
+    else gameCoverData = '';
+
+    if (fileInput) fileInput.value = '';
+    if (preview) {
+      preview.innerHTML = `<strong>DROP ${kind.toUpperCase()} ${kind === 'movie' ? 'POSTER' : 'COVER'} HERE</strong><span>OR CLICK TO UPLOAD</span>`;
+    }
+  }
+
+  function setupDropZone() {
+    const zone = $('coverDropZone');
+    const fileInput = $('coverFile');
+    const imageInput = $('image');
+    if (!zone || !fileInput) return;
+
+    function render(src) {
+      const box = $('coverPreviewBox');
+      if (!box) return;
+      box.innerHTML = src
+        ? `<img class="poster" src="${src}" alt="PREVIEW">`
+        : `<div class="poster-placeholder"><strong>DROP COVER HERE</strong><span>OR CLICK TO UPLOAD</span></div>`;
+    }
+
+    async function handle(file) {
+      if (!file || !file.type.startsWith('image/')) return alert('PLEASE CHOOSE AN IMAGE FILE.');
+      const dataUrl = await fileToOptimizedDataUrl(file);
+      uploadedCoverData = dataUrl;
+      if (imageInput) imageInput.value = '';
+      render(dataUrl);
+    }
+
+    fileInput.addEventListener('change', e => handle(e.target.files && e.target.files[0]));
+    zone.addEventListener('click', () => fileInput.click());
+    zone.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        fileInput.click();
+      }
+    });
+    zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('drag-over'); });
+    zone.addEventListener('dragleave', e => { e.preventDefault(); zone.classList.remove('drag-over'); });
+    zone.addEventListener('drop', e => {
+      e.preventDefault();
+      zone.classList.remove('drag-over');
+      handle(e.dataTransfer.files && e.dataTransfer.files[0]);
+    });
+    if (imageInput) imageInput.addEventListener('input', e => {
+      uploadedCoverData = '';
+      render(e.target.value.trim());
+    });
+    render('');
+  }
+
+  function addPresetTag(tag) {
+    const input = $('tags');
+    if (!input) return;
+    const current = input.value.split(',').map(t => t.trim()).filter(Boolean);
+    if (!current.map(t => t.toUpperCase()).includes(tag.toUpperCase())) current.push(tag);
+    input.value = current.join(', ');
+  }
+
+  
+  function showAddPanel(kind) {
+    const target = kind === 'game' ? $('addGamePanel') : $('addMoviePanel');
+    if (!target) return alert('ADD PANEL NOT FOUND.');
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    target.classList.add('flash-focus');
+    setTimeout(() => target.classList.remove('flash-focus'), 1400);
+  }
+
+  
+  function addDedicatedTag(kind, tag) {
+    const id = kind === 'movie' ? 'movieTags' : 'gameTags';
+    const input = $(id);
+    if (!input) return;
+    const current = input.value.split(',').map(t => t.trim()).filter(Boolean);
+    if (!current.map(t => t.toUpperCase()).includes(tag.toUpperCase())) current.push(tag);
+    input.value = current.join(', ');
+  }
+
+  function resetMovieForm() {
+    ['movieTitle','movieYear','movieImage','movieMood','movieRating','movieTrailer','movieTags','movieGallery','movieDescription'].forEach(id => {
+      const el = $(id);
+      if (el) el.value = '';
+    });
+    if ($('movieFavorite')) $('movieFavorite').checked = false;
+    if ($('movieFeatured')) $('movieFeatured').checked = false;
+    resetDedicatedCover('movie');
+  }
+
+  function resetGameForm() {
+    ['gameTitle','gameYear','gameImage','gameMood','gameRating','gameTrailer','gameTags','gameGallery','gameDescription'].forEach(id => {
+      const el = $(id);
+      if (el) el.value = '';
+    });
+    if ($('gameFavorite')) $('gameFavorite').checked = false;
+    if ($('gameFeatured')) $('gameFeatured').checked = false;
+    resetDedicatedCover('game');
+  }
+
+  function makeMediaEntryFromDedicatedForm(kind) {
+    draft.media ||= [];
+    const prefix = kind === 'movie' ? 'movie' : 'game';
+    const get = suffix => $(prefix + suffix);
+    const galleryRaw = get('Gallery')?.value || '';
+
+    return {
+      title: get('Title')?.value.trim() || '',
+      type: kind,
+      year: get('Year')?.value.trim() || (kind === 'game' ? 'GAME' : ''),
+      image: (kind === 'movie' ? movieCoverData : gameCoverData) || get('Image')?.value.trim() || '',
+      mood: get('Mood')?.value.trim() || '',
+      rating: get('Rating')?.value.trim() || '',
+      trailer: normalizeUrl(get('Trailer')?.value || ''),
+      gallery: typeof parseGalleryInput === 'function' ? parseGalleryInput(galleryRaw) : String(galleryRaw).split('\n').map(v => v.trim()).filter(Boolean),
+      tags: (get('Tags')?.value || '').split(',').map(t => t.trim()).filter(Boolean),
+      description: get('Description')?.value.trim() || '',
+      favorite: !!get('Favorite')?.checked,
+      featured: !!get('Featured')?.checked,
+      archived: false,
+      updatedAt: new Date().toISOString()
+    };
+  }
+
+  function addMovie() {
+    const entry = makeMediaEntryFromDedicatedForm('movie');
+    if (!entry.title) {
+      alert('MOVIE TITLE IS REQUIRED.');
+      $('movieTitle')?.focus();
+      return;
+    }
+
+    pushUndo('ADD MOVIE');
+    draft.media ||= [];
+    draft.media.unshift(entry);
+    save();
+    resetMovieForm();
+    alert('MOVIE ADDED. DOWNLOAD DATA.JS WHEN READY.');
+  }
+
+  function addGame() {
+    const entry = makeMediaEntryFromDedicatedForm('game');
+    if (!entry.title) {
+      alert('GAME TITLE IS REQUIRED.');
+      $('gameTitle')?.focus();
+      return;
+    }
+
+    pushUndo('ADD GAME');
+    draft.media ||= [];
+    draft.media.unshift(entry);
+    save();
+    resetGameForm();
+    alert('GAME ADDED. DOWNLOAD DATA.JS WHEN READY.');
+  }
+
+
+  function resetForm() {
+    ['title','year','image','mood','rating','trailer','gallery','tags','description'].forEach(id => {
+      const el = $(id);
+      if (el) el.value = '';
+    });
+    if ($('type')) $('type').value = 'movie';
+    if ($('favorite')) $('favorite').checked = false;
+    if ($('featured')) $('featured').checked = false;
+    if ($('coverFile')) $('coverFile').value = '';
+    uploadedCoverData = '';
+    editingIndex = -1;
+    if ($('saveEntryBtn')) $('saveEntryBtn').textContent = 'ADD ENTRY';
+    const box = $('coverPreviewBox');
+    if (box) box.innerHTML = `<div class="poster-placeholder"><strong>DROP COVER HERE</strong><span>OR CLICK TO UPLOAD</span></div>`;
+  }
+
+  function mediaEntryFromForm() {
+    const type = $('type')?.value || 'movie';
+    return {
+      title: $('title')?.value.trim() || '',
+      type,
+      year: $('year')?.value.trim() || (type === 'game' ? 'GAME' : ''),
+      image: uploadedCoverData || $('image')?.value.trim() || '',
+      mood: $('mood')?.value.trim() || '',
+      rating: $('rating')?.value.trim() || '',
+      trailer: normalizeUrl($('trailer')?.value || ''),
+      gallery: parseGalleryInput($('gallery')?.value || ''),
+      description: $('description')?.value.trim() || '',
+      tags: ($('tags')?.value || '').split(',').map(t => t.trim()).filter(Boolean),
+      favorite: !!$('favorite')?.checked,
+      featured: !!$('featured')?.checked,
+      archived: false,
+      updatedAt: new Date().toISOString()
+    };
+  }
+
+  function addEntry() {
+    const entry = mediaEntryFromForm();
+    if (!entry.title) return alert('TITLE IS REQUIRED.');
+
+    const possibleDuplicate = draft.media.find((x, idx) =>
+      idx !== editingIndex &&
+      String(x.title || '').trim().toLowerCase() === String(entry.title || '').trim().toLowerCase()
+    );
+    if (possibleDuplicate && !confirm('POSSIBLE DUPLICATE DETECTED. CONTINUE ANYWAY?')) return;
+
+    pushUndo(editingIndex >= 0 ? 'EDIT MEDIA' : 'ADD MEDIA');
+    if (editingIndex >= 0) {
+      entry.archived = !!draft.media[editingIndex].archived;
+      draft.media[editingIndex] = entry;
+    } else {
+      draft.media.unshift(entry);
+    }
+    save();
+    resetForm();
+  }
+
+  function editEntry(i) {
+    const item = draft.media[i];
+    if (!item) return;
+    editingIndex = i;
+    $('title').value = item.title || '';
+    $('type').value = item.type || 'movie';
+    $('year').value = item.year || '';
+    $('image').value = item.image || '';
+    $('mood').value = item.mood || '';
+    $('rating').value = item.rating || '';
+    if ($('trailer')) $('trailer').value = item.trailer || '';
+    if ($('gallery')) $('gallery').value = galleryToInput(item.gallery);
+    $('description').value = item.description || '';
+    $('tags').value = (item.tags || []).join(', ');
+    $('favorite').checked = !!item.favorite;
+    $('featured').checked = !!item.featured;
+    uploadedCoverData = '';
+    if ($('saveEntryBtn')) $('saveEntryBtn').textContent = 'SAVE CHANGES';
+    const box = $('coverPreviewBox');
+    if (box) box.innerHTML = item.image ? `<img class="poster" src="${escapeHtml(item.image)}" alt="PREVIEW">` : `<div class="poster-placeholder">NO IMAGE</div>`;
+    $('media')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function removeEntry(i) {
+    if (!confirm('REMOVE THIS ITEM?')) return;
+    pushUndo('REMOVE MEDIA');
+    draft.media.splice(i, 1);
+    selectedMedia.delete(i);
+    save();
+  }
+
+  function toggleFavorite(i) {
+    pushUndo('TOGGLE FAVORITE');
+    draft.media[i].favorite = !draft.media[i].favorite;
+    draft.media[i].updatedAt = new Date().toISOString();
+    save();
+  }
+
+  function toggleFeatured(i) {
+    pushUndo('TOGGLE FEATURED');
+    draft.media[i].featured = !draft.media[i].featured;
+    draft.media[i].updatedAt = new Date().toISOString();
+    save();
+  }
+
+  function toggleArchive(i) {
+    pushUndo('ARCHIVE');
+    draft.media[i].archived = !draft.media[i].archived;
+    draft.media[i].updatedAt = new Date().toISOString();
+    save();
+  }
+
+  function duplicateEntry(i) {
+    pushUndo('DUPLICATE');
+    const copy = structuredClone(draft.media[i]);
+    copy.title = (copy.title || 'UNTITLED') + ' COPY';
+    copy.updatedAt = new Date().toISOString();
+    draft.media.splice(i + 1, 0, copy);
+    save();
+  }
+
+  function moveEntry(i, direction) {
+    const next = i + direction;
+    if (next < 0 || next >= draft.media.length) return;
+    pushUndo('REORDER');
+    const temp = draft.media[i];
+    draft.media[i] = draft.media[next];
+    draft.media[next] = temp;
+    save();
+  }
+
+  function updateInlineField(i, field, value) {
+    if (!draft.media[i]) return;
+    pushUndo('INLINE EDIT');
+    draft.media[i][field] = value;
+    draft.media[i].updatedAt = new Date().toISOString();
+    save();
+  }
+
+  function updateInlineTags(i, value) {
+    if (!draft.media[i]) return;
+    pushUndo('EDIT TAGS');
+    draft.media[i].tags = String(value || '').split(',').map(t => t.trim()).filter(Boolean);
+    draft.media[i].updatedAt = new Date().toISOString();
+    save();
+  }
+
+  function quickSetRating(i, value) {
+    pushUndo('QUICK RATING');
+    draft.media[i].rating = value;
+    draft.media[i].updatedAt = new Date().toISOString();
+    save();
+  }
+
+  function toggleTagOnItem(i, tag) {
+    pushUndo('TOGGLE TAG');
+    draft.media[i].tags ||= [];
+    const upper = draft.media[i].tags.map(t => t.toUpperCase());
+    const idx = upper.indexOf(tag.toUpperCase());
+    if (idx >= 0) draft.media[i].tags.splice(idx, 1);
+    else draft.media[i].tags.push(tag);
+    draft.media[i].updatedAt = new Date().toISOString();
+    save();
+  }
+
+  function toggleSelect(i) {
+    selectedMedia.has(i) ? selectedMedia.delete(i) : selectedMedia.add(i);
+    renderAll();
+  }
+
+  function selectAllType(type) {
+    draft.media.forEach((item, i) => { if (item.type === type) selectedMedia.add(i); });
+    renderAll();
+  }
+
+  function clearSelection() {
+    selectedMedia.clear();
+    renderAll();
+  }
+
+  function getSelectedIndexes() {
+    return [...selectedMedia].filter(i => draft.media[i]).sort((a,b) => b-a);
+  }
+
+  function bulkFavorite() {
+    const indexes = getSelectedIndexes();
+    if (!indexes.length) return alert('SELECT ITEMS FIRST.');
+    pushUndo('BULK FAVORITE');
+    indexes.forEach(i => draft.media[i].favorite = true);
+    save();
+  }
+
+  function bulkFeatured() {
+    const indexes = getSelectedIndexes();
+    if (!indexes.length) return alert('SELECT ITEMS FIRST.');
+    pushUndo('BULK FEATURED');
+    indexes.forEach(i => draft.media[i].featured = true);
+    save();
+  }
+
+  function bulkAddTag() {
+    const indexes = getSelectedIndexes();
+    if (!indexes.length) return alert('SELECT ITEMS FIRST.');
+    const tag = prompt('TAG TO ADD?');
+    if (!tag) return;
+    pushUndo('BULK ADD TAG');
+    indexes.forEach(i => {
+      draft.media[i].tags ||= [];
+      if (!draft.media[i].tags.map(t => t.toUpperCase()).includes(tag.toUpperCase())) draft.media[i].tags.push(tag.toUpperCase());
+    });
+    save();
+  }
+
+  function bulkDelete() {
+    const indexes = getSelectedIndexes();
+    if (!indexes.length) return alert('SELECT ITEMS FIRST.');
+    if (!confirm('DELETE SELECTED ITEMS?')) return;
+    pushUndo('BULK DELETE');
+    indexes.forEach(i => draft.media.splice(i, 1));
+    selectedMedia.clear();
+    save();
+  }
+
+  async function replaceCardImage(i, file) {
+    if (!file || !file.type.startsWith('image/')) return;
+    pushUndo('REPLACE COVER');
+    const dataUrl = await fileToOptimizedDataUrl(file);
+    draft.media[i].image = dataUrl;
+    draft.media[i].updatedAt = new Date().toISOString();
+    save();
+  }
+
+  function ratingButton(i, item, value) {
+    const active = String(item.rating || '').toUpperCase() === String(value).toUpperCase();
+    return `<button type="button" class="chip-btn rating-chip ${active ? 'active-rating' : ''}" onclick="quickSetRating(${i}, '${value}')">${value}</button>`;
+  }
+
+  function quickTagsForItem(i) {
+    const tags = ['HORROR','COZY','WATCH LIST','WISHLIST','BACKLOG','COMPLETED','FAVORITE'];
+    const current = (draft.media[i]?.tags || []).map(t => t.toUpperCase());
+    return `<div class="inline-tag-bank">${tags.map(tag => `<button type="button" class="chip-btn ${current.includes(tag) ? 'active-chip' : ''}" onclick="toggleTagOnItem(${i}, '${tag}')">${tag}</button>`).join('')}</div>`;
+  }
+
+  function setQuickFilter(filter) {
+    quickFilter = filter;
+    renderAll();
+  }
+
+  function setTagFilter(tag) {
+    activeTagFilter = activeTagFilter === tag ? '' : tag;
+    renderAll();
+  }
+
+  function toggleViewMode() {
+    publicViewMode = !publicViewMode;
+    document.body.classList.toggle('public-view-mode', publicViewMode);
+    if ($('viewModeToggle')) $('viewModeToggle').textContent = publicViewMode ? 'EDIT MODE' : 'PUBLIC VIEW';
+    renderAll();
+  }
+
+  function toggleDensity() {
+    compactMode = !compactMode;
+    document.body.classList.toggle('compact-admin-mode', compactMode);
+    if ($('densityToggle')) $('densityToggle').textContent = compactMode ? 'COZY MODE' : 'COMPACT MODE';
+  }
+
+  function openQuickAdd() {
+    $('quickAddModal')?.classList.add('open');
+  }
+
+  function closeQuickAdd() {
+    $('quickAddModal')?.classList.remove('open');
+  }
+
+  function saveQuickAdd() {
+    const title = $('quickTitle')?.value.trim();
+    if (!title) return alert('TITLE IS REQUIRED.');
+    pushUndo('QUICK ADD');
+    draft.media.unshift({
+      title,
+      type: $('quickType')?.value || 'movie',
+      year: $('quickYear')?.value.trim() || '',
+      image: $('quickImage')?.value.trim() || '',
+      mood: '',
+      rating: $('quickRating')?.value.trim() || '',
+      trailer: normalizeUrl($('quickTrailer')?.value || ''),
+      gallery: parseGalleryInput($('quickGallery')?.value || ''),
+      description: $('quickDescription')?.value.trim() || '',
+      tags: ($('quickTags')?.value || '').split(',').map(t => t.trim()).filter(Boolean),
+      favorite: false,
+      featured: false,
+      archived: false,
+      updatedAt: new Date().toISOString()
+    });
+    ['quickTitle','quickYear','quickImage','quickTags','quickRating','quickTrailer','quickGallery','quickDescription'].forEach(id => { if ($(id)) $(id).value = ''; });
+    closeQuickAdd();
+    save();
+  }
+
+  function surpriseMe() {
+    const visible = draft.media.filter(item => !item.archived);
+    if (!visible.length) return alert('NO ITEMS YET.');
+    const pick = visible[Math.floor(Math.random() * visible.length)];
+    alert(`SURPRISE PICK:\n\n${pick.title || 'UNTITLED'}${pick.rating ? '\nRATING: ' + pick.rating : ''}${pick.description ? '\n\n' + pick.description : ''}`);
+  }
+
+  
+  
+  function resetSocialForm() {
+    ['socialName','socialPlatform','socialType','socialUrl','socialAvatar','socialNotes'].forEach(id => {
+      const el = $(id);
+      if (el) el.value = '';
+    });
+
+    if ($('socialCategory')) $('socialCategory').value = 'my-link';
+    editingSocialIndex = -1;
+
+    const btn = $('socialSaveBtn');
+    if (btn) btn.textContent = 'ADD SOCIAL';
+  }
+
+  function getSocialFormData() {
+    return {
+      title: $('socialName')?.value.trim() || '',
+      platform: $('socialPlatform')?.value.trim() || 'GENERAL',
+      type: $('socialType')?.value.trim() || 'LINK',
+      url: normalizeUrl($('socialUrl')?.value || ''),
+      category: $('socialCategory')?.value || 'my-link',
+      avatar: $('socialAvatar')?.value.trim() || '',
+      notes: $('socialNotes')?.value.trim() || ''
+    };
+  }
+
+  function saveSocial() {
+    const entry = getSocialFormData();
+
+    if (!entry.title) {
+      alert('NAME IS REQUIRED.');
+      return;
+    }
+
+    if (!Array.isArray(draft.socials)) draft.socials = [];
+
+    pushUndo(editingSocialIndex >= 0 ? 'EDIT SOCIAL' : 'ADD SOCIAL');
+
+    if (editingSocialIndex >= 0 && draft.socials[editingSocialIndex]) {
+      draft.socials[editingSocialIndex] = entry;
+    } else {
+      draft.socials.unshift(entry);
+    }
+
+    localStorage.setItem(STORAGE, JSON.stringify(draft));
+    setDirty(true);
+    renderAll();
+    resetSocialForm();
+
+    alert('SOCIAL LINK SAVED. DOWNLOAD DATA.JS WHEN READY.');
+  }
+
+  function addSocial() {
+    saveSocial();
+  }
+
+  function editSocial(i) {
+    if (!Array.isArray(draft.socials)) draft.socials = [];
+
+    const s = draft.socials[i];
+    if (!s) {
+      alert('SOCIAL LINK NOT FOUND.');
+      return;
+    }
+
+    editingSocialIndex = i;
+
+    if ($('socialName')) $('socialName').value = s.title || s.name || '';
+    if ($('socialPlatform')) $('socialPlatform').value = s.platform || '';
+    if ($('socialType')) $('socialType').value = s.type || '';
+    if ($('socialUrl')) $('socialUrl').value = s.url || '';
+    if ($('socialCategory')) $('socialCategory').value = s.category || 'my-link';
+    if ($('socialAvatar')) $('socialAvatar').value = s.avatar || '';
+    if ($('socialNotes')) $('socialNotes').value = s.notes || '';
+
+    const btn = $('socialSaveBtn');
+    if (btn) btn.textContent = 'SAVE SOCIAL';
+
+    $('socials')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function removeSocial(i) {
+    if (!Array.isArray(draft.socials)) draft.socials = [];
+
+    if (!draft.socials[i]) return;
+
+    if (!confirm('REMOVE THIS SOCIAL LINK?')) return;
+
+    pushUndo('REMOVE SOCIAL');
+    draft.socials.splice(i, 1);
+    save();
+  }
+
+function renderTagManager() {
+    const box = $('tagManager');
+    if (!box) return;
+    const counts = {};
+    draft.media.forEach(item => (item.tags || []).forEach(tag => counts[tag] = (counts[tag] || 0) + 1));
+    const tags = Object.keys(counts).sort((a,b) => a.localeCompare(b));
+    box.innerHTML = tags.length
+      ? tags.map(tag => `<button type="button" class="chip-btn ${activeTagFilter === tag ? 'active-chip' : ''}" onclick="setTagFilter('${escapeHtml(tag).replace(/'/g, "\\'")}')">${escapeHtml(tag)} <span>${counts[tag]}</span></button>`).join('')
+      : '<span class="mini-note">NO TAGS YET</span>';
+  }
+
+  function previewCard(item, i) {
+    const checked = selectedMedia.has(i) ? 'checked' : '';
+    const tags = (item.tags || []).map(t => `<span class="badge">${escapeHtml(t)}</span>`).join('');
+    const tagText = (item.tags || []).join(', ');
+    const img = item.image
+      ? `<img loading="lazy" class="poster" src="${escapeHtml(item.image)}" alt="">`
+      : '<div class="poster-placeholder">DROP IMAGE</div>';
+
+    const ratingButtons = item.type === 'movie'
+      ? [ratingButton(i,item,'10/10'), ratingButton(i,item,'MUST WATCH'), ratingButton(i,item,'REWATCH'), ratingButton(i,item,'CULT FAVORITE'), ratingButton(i,item,'SKIPPABLE')].join('')
+      : [ratingButton(i,item,'10/10'), ratingButton(i,item,'MUST PLAY'), ratingButton(i,item,'CURRENTLY PLAYING'), ratingButton(i,item,'BACKLOG'), ratingButton(i,item,'DROPPED')].join('');
+
+    return `<article data-index="${i}" class="poster-admin-card clean-admin-card ${item.archived ? 'archived-card' : ''}" ondragover="event.preventDefault()" ondrop="event.preventDefault(); replaceCardImage(${i}, event.dataTransfer.files[0])">
+      <div class="poster-wrap">
+        ${img}
+        <div class="poster-hover-actions">
+          <button type="button" class="hover-icon" onclick="toggleFavorite(${i})" title="Favorite">★</button>
+          <button type="button" class="hover-icon" onclick="toggleFeatured(${i})" title="Featured">✦</button>
+          <button type="button" class="hover-icon" onclick="toggleArchive(${i})" title="Archive">🗄</button>
+        </div>
+      </div>
+
+      <div class="card-quick-info">
+        <input class="inline-title" value="${escapeHtml(item.title || '')}" onchange="updateInlineField(${i}, 'title', this.value)">
+        <p class="mini-meta">${escapeHtml([item.year, item.mood, item.rating ? 'RATING: ' + item.rating : '', item.archived ? 'ARCHIVED' : ''].filter(Boolean).join(' • '))}</p>
+        <div class="badges">${tags}</div>
+      </div>
+
+      <details class="manage-details">
+        <summary>MANAGE</summary>
+        <div class="manage-panel">
+          <label class="select-row"><input type="checkbox" ${checked} onchange="toggleSelect(${i})"> SELECT</label>
+          <div class="compact-actions">
+            <button type="button" class="btn mini-btn" onclick="toggleFavorite(${i})">${item.favorite ? '★ FAVORITE' : '☆ FAVORITE'}</button>
+            <button type="button" class="btn mini-btn" onclick="toggleFeatured(${i})">${item.featured ? '★ FEATURED' : '☆ FEATURED'}</button>
+            <button type="button" class="btn mini-btn" onclick="editEntry(${i})">FORM EDIT</button>
+            <button type="button" class="btn mini-btn" onclick="duplicateEntry(${i})">DUPLICATE</button>
+            <button type="button" class="btn mini-btn" onclick="toggleArchive(${i})">${item.archived ? 'UNARCHIVE' : 'ARCHIVE'}</button>
+            <button type="button" class="btn mini-btn danger-btn" onclick="removeEntry(${i})">REMOVE</button>
+            <button type="button" class="btn mini-btn" onclick="moveEntry(${i}, -1)">MOVE UP</button>
+            <button type="button" class="btn mini-btn" onclick="moveEntry(${i}, 1)">MOVE DOWN</button>
+          </div>
+          ${quickTagsForItem(i)}
+        </div>
+      </details>
+
+      <div class="quick-rating-bar">${ratingButtons}</div>
+
+      <details class="edit-details">
+        <summary>EDIT DETAILS</summary>
+        <div class="inline-fields">
+          <div class="inline-row">
+            <input value="${escapeHtml(item.year || '')}" placeholder="YEAR" onchange="updateInlineField(${i}, 'year', this.value)">
+            <input value="${escapeHtml(item.rating || '')}" placeholder="RATING" onchange="updateInlineField(${i}, 'rating', this.value)">
+          </div>
+          <input value="${escapeHtml(item.mood || '')}" placeholder="MOOD" onchange="updateInlineField(${i}, 'mood', this.value)">
+          <input value="${escapeHtml(tagText)}" placeholder="TAGS" onchange="updateInlineTags(${i}, this.value)">
+          <input value="${escapeHtml(item.trailer || '')}" placeholder="TRAILER / VIDEO LINK" onchange="updateInlineField(${i}, 'trailer', normalizeUrl(this.value))">
+          <textarea placeholder="SCREENSHOTS / EXTRA IMAGES — ONE URL PER LINE" onchange="updateInlineField(${i}, 'gallery', parseGalleryInput(this.value))">${escapeHtml(galleryToInput(item.gallery))}</textarea>
+          <textarea placeholder="BLURB" onchange="updateInlineField(${i}, 'description', this.value)">${escapeHtml(item.description || '')}</textarea>
+        </div>
+      </details>
+    </article>`;
+  }
+
+  function matchesFilters(item) {
+    const q = ($('mediaSearch')?.value || '').toLowerCase().trim();
+    const showArchived = !!$('showArchived')?.checked;
+    if (!showArchived && item.archived) return false;
+    if (activeTagFilter && !(item.tags || []).includes(activeTagFilter)) return false;
+    if (quickFilter === 'favorite' && !item.favorite) return false;
+    if (quickFilter === 'featured' && !item.featured) return false;
+    if (quickFilter === 'watchlist' && !(item.tags || []).some(t => ['WATCH LIST','WISHLIST'].includes(String(t).toUpperCase()))) return false;
+    if (quickFilter === 'backlog' && !(item.tags || []).some(t => String(t).toUpperCase() === 'BACKLOG')) return false;
+    if (quickFilter === 'currentlyPlaying' && !(item.tags || []).some(t => String(t).toUpperCase() === 'CURRENTLY PLAYING')) return false;
+    if (quickFilter === 'october' && !(item.tags || []).some(t => String(t).toUpperCase() === 'OCTOBER WATCHES')) return false;
+    if (quickFilter === 'comfort' && !(item.tags || []).some(t => ['COMFORT MOVIE','COMFORT GAME'].includes(String(t).toUpperCase()))) return false;
+    if (quickFilter === 'atmosphere' && !(item.tags || []).some(t => String(t).toUpperCase() === 'BEST ATMOSPHERE')) return false;
+    if (quickFilter === 'missingPoster' && item.image) return false;
+    if (quickFilter === 'missingRating' && item.rating) return false;
+    if (quickFilter === 'missingBlurb' && item.description) return false;
+    if (!q) return true;
+    return [item.title, item.type, item.year, item.mood, item.rating, item.description, ...(item.tags || [])].filter(Boolean).join(' ').toLowerCase().includes(q);
+  }
+
+  function sortedEntries(entries) {
+    const sort = $('mediaSort')?.value || 'manual';
+    const out = entries.slice();
+    if (sort === 'recent') out.sort((a,b) => String(b.item.updatedAt || '').localeCompare(String(a.item.updatedAt || '')));
+    if (sort === 'title') out.sort((a,b) => String(a.item.title || '').localeCompare(String(b.item.title || '')));
+    if (sort === 'year') out.sort((a,b) => String(b.item.year || '').localeCompare(String(a.item.year || '')));
+    return out;
+  }
+
+  function renderMediaLibraries() {
+    renderTagManager();
+
+    const all = draft.media.map((item, i) => ({ item, i })).filter(({ item }) => matchesFilters(item));
+    const movies = sortedEntries(all.filter(({ item }) => item.type === 'movie'));
+    const games = sortedEntries(all.filter(({ item }) => item.type === 'game'));
+    const favorites = sortedEntries(all.filter(({ item }) => item.favorite));
+    const watchlist = sortedEntries(all.filter(({ item }) => (item.tags || []).some(t => ['WATCH LIST','WISHLIST'].includes(String(t).toUpperCase()))));
+    const featured = sortedEntries(all.filter(({ item }) => item.featured));
+
+    const render = arr => arr.map(({ item, i }) => previewCard(item, i)).join('');
+
+    if ($('moviesDraftGrid')) $('moviesDraftGrid').innerHTML = render(movies) || '<p class="notice">NO MOVIES FOUND.</p>';
+    if ($('gamesDraftGrid')) $('gamesDraftGrid').innerHTML = render(games) || '<p class="notice">NO GAMES FOUND.</p>';
+    if ($('favoriteDraftGrid')) $('favoriteDraftGrid').innerHTML = render(favorites) || '<p class="notice">NO FAVORITES FOUND.</p>';
+    if ($('watchlistDraftGrid')) $('watchlistDraftGrid').innerHTML = render(watchlist) || '<p class="notice">NO WATCH LIST ITEMS FOUND.</p>';
+    if ($('favoritesFocusGrid')) $('favoritesFocusGrid').innerHTML = render(favorites.slice(0, 8)) || '<p class="notice">NO FAVORITES YET.</p>';
+    if ($('featuredManagerGrid')) $('featuredManagerGrid').innerHTML = render(featured) || '<p class="notice">NO FEATURED PICKS YET.</p>';
+    if ($('favoritesManagerGrid')) $('favoritesManagerGrid').innerHTML = render(favorites) || '<p class="notice">NO FAVORITES YET.</p>';
+
+    const tagEntries = tag => sortedEntries(all.filter(({ item }) => (item.tags || []).some(t => String(t).toUpperCase() === tag)));
+    if ($('currentlyPlayingGrid')) $('currentlyPlayingGrid').innerHTML = render(tagEntries('CURRENTLY PLAYING')) || '<p class="notice">NO ITEMS YET.</p>';
+    if ($('octoberWatchesGrid')) $('octoberWatchesGrid').innerHTML = render(tagEntries('OCTOBER WATCHES')) || '<p class="notice">NO ITEMS YET.</p>';
+    if ($('comfortPicksGrid')) $('comfortPicksGrid').innerHTML = render(sortedEntries(all.filter(({ item }) => (item.tags || []).some(t => ['COMFORT MOVIE','COMFORT GAME'].includes(String(t).toUpperCase()))))) || '<p class="notice">NO ITEMS YET.</p>';
+    if ($('atmosphereGrid')) $('atmosphereGrid').innerHTML = render(tagEntries('BEST ATMOSPHERE')) || '<p class="notice">NO ITEMS YET.</p>';
+    if ($('unratedGrid')) $('unratedGrid').innerHTML = render(sortedEntries(all.filter(({ item }) => !item.rating))) || '<p class="notice">NO UNRATED ITEMS.</p>';
+
+    if ($('movieCount')) $('movieCount').textContent = draft.media.filter(x => x.type === 'movie' && !x.archived).length + ' ITEMS';
+    if ($('gameCount')) $('gameCount').textContent = draft.media.filter(x => x.type === 'game' && !x.archived).length + ' ITEMS';
+    if ($('socialCount')) $('socialCount').textContent = draft.socials.length + ' LINKS';
+    if ($('favoriteCount')) $('favoriteCount').textContent = draft.media.filter(x => x.favorite && !x.archived).length + ' ITEMS';
+    if ($('watchlistCount')) $('watchlistCount').textContent = draft.media.filter(x => !x.archived && (x.tags || []).some(t => ['WATCH LIST','WISHLIST'].includes(String(t).toUpperCase()))).length + ' ITEMS';
+    if ($('unratedCount')) $('unratedCount').textContent = draft.media.filter(x => !x.archived && !x.rating).length + ' ITEMS';
+
+    renderCollectionHealth();
+  }
+
+  function renderCollectionHealth() {
+    if (!$('healthGrid')) return;
+    const missingPoster = draft.media.filter(x => !x.image).length;
+    const missingBlurb = draft.media.filter(x => !x.description).length;
+    const missingRating = draft.media.filter(x => !x.rating).length;
+    $('healthGrid').innerHTML = `
+      <div class="health-card"><strong>${missingPoster}</strong><span>MISSING POSTERS</span></div>
+      <div class="health-card"><strong>${missingBlurb}</strong><span>MISSING BLURBS</span></div>
+      <div class="health-card"><strong>${missingRating}</strong><span>MISSING RATINGS</span></div>
+    `;
+  }
+
+  
+  
+  function renderSocialDraft() {
+    const box = $('socialDraftList');
+    if (!box) return;
+
+    if (!Array.isArray(draft.socials)) draft.socials = [];
+
+    const renderCard = (s, i) => `
+      <article class="social-admin-card">
+        <div class="social-admin-head">
+          ${
+            s.avatar
+              ? `<img src="${escapeHtml(s.avatar)}" alt="${escapeHtml(s.title || s.name || '')}">`
+              : '<div class="social-admin-avatar-placeholder">✦</div>'
+          }
+          <div>
+            <h3>${escapeHtml(s.title || s.name || '')}</h3>
+            <p>${escapeHtml(s.platform || s.type || 'GENERAL')} • ${escapeHtml((s.category || 'my-link').replace('-', ' ').toUpperCase())}</p>
+          </div>
+        </div>
+
+        ${s.notes ? `<p class="social-admin-note">${escapeHtml(s.notes)}</p>` : ''}
+
+        <div class="compact-actions">
+          <button type="button" class="btn mini-btn" onclick="editSocial(${i})">EDIT</button>
+          <button type="button" class="btn mini-btn danger-btn" onclick="removeSocial(${i})">REMOVE</button>
+        </div>
+      </article>
+    `;
+
+    const myLinks = draft.socials
+      .map((s, i) => ({ s, i }))
+      .filter(({ s }) => (s.category || 'my-link') === 'my-link');
+
+    const favPeople = draft.socials
+      .map((s, i) => ({ s, i }))
+      .filter(({ s }) => (s.category || '') === 'creator');
+
+    box.innerHTML = `
+      <div class="social-admin-group">
+        <h3 class="mini-heading">MY LINKS</h3>
+        <div class="social-admin-grid">
+          ${myLinks.map(({ s, i }) => renderCard(s, i)).join('') || '<p class="notice">NO LINKS YET.</p>'}
+        </div>
+      </div>
+
+      <div class="social-admin-group">
+        <h3 class="mini-heading">FAV PEOPLE</h3>
+        <div class="social-admin-grid">
+          ${favPeople.map(({ s, i }) => renderCard(s, i)).join('') || '<p class="notice">NO PEOPLE YET.</p>'}
+        </div>
+      </div>
+    `;
+  }
+
+function renderRecentlyEdited() {
+    if (!$('recentlyEditedList')) return;
+    const recent = draft.media.filter(x => x.updatedAt).sort((a,b) => String(b.updatedAt).localeCompare(String(a.updatedAt))).slice(0, 8);
+    $('recentlyEditedList').innerHTML = recent.length
+      ? recent.map(item => `<button type="button" class="recent-item"><strong>${escapeHtml(item.title)}</strong><span>${escapeHtml(item.type || '')}</span></button>`).join('')
+      : '<p class="notice">NOTHING EDITED YET.</p>';
+  }
+
+  function renderAll() {
+    renderMediaLibraries();
+    renderSocialDraft();
+    renderRecentlyEdited();
+    renderCode();
+  }
+
+  function setupCollapsibles() {
+    document.querySelectorAll('main > section.panel, main > section.admin-grid').forEach((section, idx) => {
+      if (section.classList.contains('no-collapse')) return;
+      const header = section.querySelector('.section-header');
+      if (!header || header.querySelector('.collapse-btn')) return;
+      const btn = document.createElement('button');
+      btn.className = 'collapse-btn';
+      btn.type = 'button';
+      btn.textContent = idx < 3 ? 'HIDE' : 'SHOW';
+      if (idx >= 3) section.classList.add('collapsed-section');
+      btn.addEventListener('click', () => {
+        section.classList.toggle('collapsed-section');
+        btn.textContent = section.classList.contains('collapsed-section') ? 'SHOW' : 'HIDE';
+      });
+      header.appendChild(btn);
+    });
+  }
+
+  window.addEventListener('paste', e => {
+    const card = document.activeElement?.closest?.('.poster-admin-card');
+    if (!card) return;
+    const i = Number(card.dataset.index);
+    if (Number.isNaN(i)) return;
+    const item = [...(e.clipboardData?.items || [])].find(x => x.type.startsWith('image/'));
+    if (!item) return;
+    e.preventDefault();
+    replaceCardImage(i, item.getAsFile());
+  });
+
+  document.addEventListener('keydown', e => {
+    const tag = document.activeElement?.tagName?.toLowerCase();
+    const typing = ['input','textarea','select'].includes(tag);
+    if (e.key === '/' && !typing) {
+      e.preventDefault();
+      $('mediaSearch')?.focus();
+    }
+    if ((e.key === 'n' || e.key === 'N') && !typing) {
+      e.preventDefault();
+      openQuickAdd();
+    }
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+      e.preventDefault();
+      exportData();
+    }
+    if (e.key === 'Escape') closeQuickAdd();
+  });
+
+  window.addEventListener('beforeunload', e => {
+    if (!dirty) return;
+    e.preventDefault();
+    e.returnValue = '';
+  });
+
+  window.saveSocial = saveSocial;
+  window.addSocial = addSocial;
+  window.editSocial = editSocial;
+  window.removeSocial = removeSocial;
+  window.resetSocialForm = resetSocialForm;
+  window.addDedicatedTag = addDedicatedTag;
+  window.showAddPanel = showAddPanel;
+  window.addMovie = addMovie;
+  window.addGame = addGame;
+  window.resetMovieForm = resetMovieForm;
+  window.resetGameForm = resetGameForm;
+
+  setupDedicatedCoverDrop('movie');
+  setupDedicatedCoverDrop('game');
+  setupDropZone();
+  setupCollapsibles();
+  populateSettingsForm();
+  renderAll();
+  renderBackupList();
+  updateUndoStatus();
+  setDirty(false);
+</script>
+
+<script>
+  function forceTrailerButtons() {
+    document.querySelectorAll('.media-modal.open, #mediaModal').forEach(modal => {
+      const oldEmbeds = modal.querySelectorAll('iframe, .modal-trailer');
+      oldEmbeds.forEach(el => {
+        const wrapper = el.closest('.modal-trailer') || el;
+        wrapper.remove();
+      });
+
+      const content = modal.querySelector('#mediaModalContent') || modal;
+      if (!content || content.querySelector('.trailer-button')) return;
+
+      const title = content.querySelector('h1, h2, h3')?.textContent?.trim()?.toLowerCase();
+      const data = window.HAUNTED_BLANKET_DATA || {};
+      const media = Array.isArray(data.media) ? data.media : [];
+      const item = media.find(x => String(x.title || '').trim().toLowerCase() === title);
+
+      if (!item || !item.trailer) return;
+
+      const buttonWrap = document.createElement('div');
+      buttonWrap.className = 'modal-trailer-link';
+      buttonWrap.innerHTML = `<a href="${String(item.trailer).replace(/"/g, '&quot;')}" target="_blank" rel="noopener noreferrer" class="trailer-button">WATCH TRAILER ON YOUTUBE</a>`;
+
+      const tags = content.querySelector('.modal-tags, .tags, .badges');
+      if (tags) tags.before(buttonWrap);
+      else content.appendChild(buttonWrap);
+    });
+  }
+
+  document.addEventListener('click', () => setTimeout(forceTrailerButtons, 40));
+  document.addEventListener('keydown', () => setTimeout(forceTrailerButtons, 40));
+  setInterval(forceTrailerButtons, 500);
+</script>
+</body>
+</html>

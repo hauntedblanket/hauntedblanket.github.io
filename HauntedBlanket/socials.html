@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SOCIALS • HAUNTED BLANKET</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body data-page="socials">
+  <header>
+    <nav aria-label="Main navigation">
+      <a href="index.html">HOME</a>
+      <a href="movies.html">MOVIES</a>
+      <a href="games.html">GAMES</a>
+      <a href="socials.html">SOCIALS</a>
+    </nav>
+  </header>
+  <section class="hero compact-hero">
+    <h1>SOCIALS</h1>
+    <img src="assets/socials-icon.png" class="page-icon-img" alt="Socials">
+    <p class="subtitle" data-hb-text="socialsSubtitle">CREATORS, STREAMERS, PAGES, AND LINKS</p>
+  </section>
+  
+<section class="global-search-wrap">
+  <input type="text" id="globalSearch" class="global-search" placeholder="SEARCH THE BLANKET..." />
+  <div id="globalSearchResults" class="global-search-results"></div>
+</section>
+
+<main>
+    <section class="socials-section">
+      <div class="section-heading">
+        <h2>MOI STUFF</h2>
+      </div>
+      <section class="social-grid upgraded-social-grid" id="myLinksGrid"></section>
+    </section>
+
+    <section class="socials-section">
+      <div class="section-heading">
+        <h2>THINGS I LIKE</h2>
+      </div>
+      <section class="social-grid upgraded-social-grid" id="creatorsGrid"></section>
+    </section>
+  
+<section class="recommend-panel">
+  <h2>LEAVE A RECOMMENDATION</h2>
+  <p>RECOMMEND A MOVIE, GAME, SERIES OR ANYTHING COZY/HORROR.</p>
+
+  <div class="recommend-grid">
+    <input type="text" id="recommendName" placeholder="NAME (OPTIONAL)">
+
+    <select id="recommendType">
+      <option>MOVIE</option>
+      <option>GAME</option>
+      <option>ANIME</option>
+      <option>SERIES</option>
+      <option>OTHER</option>
+    </select>
+
+    <input type="text" id="recommendTitle" placeholder="TITLE">
+
+    <textarea id="recommendReason" placeholder="WHY SHOULD I CHECK IT OUT?"></textarea>
+
+    <button class="recommend-button" onclick="submitRecommendation()">
+      SEND RECOMMENDATION
+    </button>
+  </div>
+</section>
+
+</main>
+  <footer data-hb-text="footer">HAUNTED BLANKET</footer>
+  <script src="data.js"></script>
+  <script src="site.js"></script>
+  <script>
+    const data = window.HAUNTED_BLANKET_DATA || { socials: [] };
+
+    function escapeHtml(text=''){
+      return String(text).replace(/[&<>'"]/g, c => ({
+        '&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'
+      }[c]));
+    }
+
+    function platformIcon(platform=''){
+      const p = platform.toUpperCase();
+      if (p.includes('TWITCH')) return '🎮';
+      if (p.includes('YOUTUBE')) return '▶';
+      if (p.includes('SPOTIFY')) return '♫';
+      if (p.includes('INSTAGRAM')) return '◉';
+      if (p.includes('DISCORD')) return '✦';
+      return '☾';
+    }
+
+    function renderCard(social){
+      return `
+        <a class="social-card upgraded-social-card" href="${escapeHtml(social.url || '#')}" target="_blank" rel="noopener">
+          <div class="social-card-top">
+            ${social.avatar
+              ? `<img class="social-avatar" src="${escapeHtml(social.avatar)}" alt="${escapeHtml(social.title)}">`
+              : `<div class="social-avatar placeholder-avatar">${platformIcon(social.platform)}</div>`
+            }
+
+            <div>
+              <h3>${escapeHtml(social.title)}</h3>
+              <p class="social-platform">${escapeHtml(social.platform || social.type || 'GENERAL')}</p>
+            </div>
+          </div>
+
+          ${social.notes ? `<p class="social-description">${escapeHtml(social.notes)}</p>` : ''}
+
+          <div class="social-footer">
+            <span class="social-chip">${escapeHtml((social.category || 'my-link').replace('-', ' ').toUpperCase())}</span>
+            <span class="social-visit">OPEN ↗</span>
+          </div>
+        </a>
+      `;
+    }
+
+    function normalizeCategory(value=''){
+      return String(value).trim().toLowerCase().replace(/\s+/g, '-');
+    }
+
+    function isCreator(social){
+      const category = normalizeCategory(social.category || '');
+      const type = normalizeCategory(social.type || '');
+      return ['creator', 'creators', 'streamer', 'streamers', 'page', 'pages'].includes(category)
+        || ['creator', 'creators', 'streamer', 'streamers', 'page', 'pages'].includes(type);
+    }
+
+    const myLinks = (data.socials || []).filter(x => !isCreator(x));
+    const creators = (data.socials || []).filter(isCreator);
+
+    document.getElementById('myLinksGrid').innerHTML =
+      myLinks.map(renderCard).join('') || '<p class="social-empty">NO LINKS YET</p>';
+
+    document.getElementById('creatorsGrid').innerHTML =
+      creators.map(renderCard).join('') || '<p class="social-empty">NO PEOPLE YET</p>';
+  </script>
+</body>
+</html>
