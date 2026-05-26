@@ -9,7 +9,7 @@
     featuredHeading: 'FEATURED PICKS',
     featuredSubtitle: 'MOVIES AND GAMES FOR LATE NIGHTS',
     quote: 'EVERY NIGHT HAS A STORY.',
-    footer: 'HAUNTED BLANKET • CURATED STATIC SITE',
+    footer: 'HAUNTED BLANKET',
     moviesSubtitle: '',
     moviesHeading: 'FAVORITE MOVIES',
     moviesFavoritesHeading: 'FAVORITE MOVIES',
@@ -85,30 +85,7 @@
   document.addEventListener('DOMContentLoaded', () => { applyStyles(); applyText(); });
 })();
 
-
-/* RECOMMENDATIONS */
-function submitRecommendation(){
-  const name = document.getElementById('recommendName')?.value || 'ANONYMOUS';
-  const type = document.getElementById('recommendType')?.value || '';
-  const title = document.getElementById('recommendTitle')?.value || '';
-  const reason = document.getElementById('recommendReason')?.value || '';
-
-  const output = `
-RECOMMENDATION
-NAME: ${name}
-TYPE: ${type}
-TITLE: ${title}
-WHY: ${reason}
-`;
-
-  navigator.clipboard.writeText(output);
-
-  alert('RECOMMENDATION COPIED!\n\nPASTE IT INTO DISCORD, EMAIL OR WHEREVER YOU WANT.');
-}
-
-
-
-/* GLOBAL SEARCH - CLICK THROUGH */
+/* Global search */
 document.addEventListener('DOMContentLoaded', () => {
   const search = document.getElementById('globalSearch');
   const results = document.getElementById('globalSearchResults');
@@ -166,30 +143,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const el = document.createElement('a');
       el.className = 'search-result';
-el.href = href;
-el.addEventListener('touchend', e => {
-  e.preventDefault();
-  search.blur();
-  window.location.href = href;
-});
-el.addEventListener('click', e => {
-  e.preventDefault();
-  search.blur();
-  window.location.href = href;
-});
+      el.href = href;
+      el.addEventListener('touchend', e => {
+        e.preventDefault();
+        search.blur();
+        window.location.href = href;
+      });
+      el.addEventListener('click', e => {
+        e.preventDefault();
+        search.blur();
+        window.location.href = href;
+      });
 
-el.addEventListener('touchend', e => {
-  e.preventDefault();
-  search.blur();
-  window.location.href = href;
-});
-
-el.addEventListener('click', e => {
-  e.preventDefault();
-  search.blur();
-  window.location.href = href;
-});
-      
       el.innerHTML = `
         <strong>${title}</strong>
         <small>${item.type || 'MEDIA'}${item.rating ? ` • ${item.rating}` : ''}</small>
@@ -203,7 +168,7 @@ el.addEventListener('click', e => {
   });
 });
 
-/* SEARCH TARGET HIGHLIGHT */
+/* Search result highlight */
 document.addEventListener('DOMContentLoaded', () => {
   const params = new URLSearchParams(window.location.search);
   const query = params.get('search');
@@ -254,10 +219,142 @@ async function submitRecommendation(){
     }
 
   }catch(err){
-    console.error(err);
     alert('ERROR SENDING RECOMMENDATION');
   }
 }
 window.addEventListener('load', () => {
   document.body.classList.add('loaded');
 });
+/* Shared media cards and detail modal */
+(function () {
+  const hbData = window.HAUNTED_BLANKET_DATA || { media: [] };
+  const media = Array.isArray(hbData.media) ? hbData.media : [];
+
+  function escapeHtml(text = '') {
+    return String(text == null ? '' : text).replace(/[&<>'"]/g, c => ({
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      "'": '&#39;',
+      '"': '&quot;'
+    }[c]));
+  }
+
+  function getVideoLink(item = {}) {
+    return item.youtube || item.youtubeUrl || item.video || item.videoUrl || item.trailer || item.trailerUrl || '';
+  }
+
+  function galleryMarkup(item = {}) {
+    const images = Array.isArray(item.gallery) ? item.gallery.filter(Boolean) : [];
+    if (!images.length) return '';
+    return `<div class="modal-gallery">${images.map(src => imageTag(src, `${item.title || 'Media'} screenshot`, '', 'IMAGE MISSING')).join('')}</div>`;
+  }
+
+  function trailerMarkup(item = {}) {
+    const link = getVideoLink(item);
+    if (!link) return '';
+    return `<div class="modal-actions">
+      <a class="youtube-watch-btn" href="${escapeHtml(link)}" target="_blank" rel="noopener noreferrer">
+        ▶ WATCH ON YOUTUBE ↗
+      </a>
+    </div>`;
+  }
+
+  function mediaIndex(item) {
+    return media.indexOf(item);
+  }
+
+  function imageTag(src, alt, className = '', placeholderText = 'IMAGE MISSING', placeholderClass = 'poster-placeholder') {
+    if (!src) return `<div class="${placeholderClass}">${escapeHtml(placeholderText)}</div>`;
+    const cls = className ? ` class="${escapeHtml(className)}"` : '';
+    const fallback = `this.onerror=null;this.outerHTML='<div class=&quot;${escapeHtml(placeholderClass)}&quot;>${escapeHtml(placeholderText)}</div>'`;
+    return `<img loading="lazy" decoding="async"${cls} src="${escapeHtml(src)}" alt="${escapeHtml(alt)}" onerror="${fallback}">`;
+  }
+
+  function mediaCard(item = {}, options = {}) {
+    const index = mediaIndex(item);
+    const img = imageTag(item.image, `${item.title || 'Media'} poster`, 'poster', 'ADD COVER');
+    const tags = (item.tags || []).map(t => `<span class="badge">${escapeHtml(t)}</span>`).join('');
+    const favorite = options.showFavoritePill && item.favorite ? '<span class="favorite-pill">FAVORITE</span>' : '';
+    const topLine = options.showFavoritePill ? `<div class="card-topline">${favorite}</div>` : '';
+    const rating = item.rating ? `<p class="card-rating">RATING: ${escapeHtml(item.rating)}</p>` : '';
+
+    return `<article class="card clickable-card" onclick="openMediaModal(${index})" tabindex="0" role="button" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openMediaModal(${index})}">
+      ${img}
+      ${topLine}
+      <h3 class="card-title">${escapeHtml(item.title)}</h3>
+      <p class="card-meta">${escapeHtml(item.year || item.type)} • ${escapeHtml(item.mood || 'LATE-NIGHT PICK')}</p>
+      ${rating}
+      <div class="badges">${tags}</div>
+    </article>`;
+  }
+
+  function nowMiniCard(item) {
+    if (!item) return '<div class="now-empty">NOT SET YET</div>';
+    const index = mediaIndex(item);
+    const img = imageTag(item.image, `${item.title || 'Media'} poster`, '', 'ADD COVER');
+    return `<article class="now-mini-card" onclick="openMediaModal(${index})" tabindex="0" role="button" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openMediaModal(${index})}">
+      ${img}
+      <strong>${escapeHtml(item.title)}</strong>
+    </article>`;
+  }
+
+  function openMediaModal(index) {
+    const item = media[index];
+    if (!item) return;
+
+    const modal = document.getElementById('mediaModal');
+    const content = document.getElementById('mediaModalContent');
+    if (!modal || !content) return;
+
+    const img = imageTag(item.image, `${item.title || 'Media'} poster`, 'modal-poster', 'ADD COVER', 'poster-placeholder modal-placeholder');
+    const tags = (item.tags || []).map(t => `<span class="badge">${escapeHtml(t)}</span>`).join('');
+    const rating = item.rating ? `<div class="detail-row"><strong>RATING</strong><span>${escapeHtml(item.rating)}</span></div>` : '';
+    const mood = item.mood ? `<div class="detail-row"><strong>MOOD</strong><span>${escapeHtml(item.mood)}</span></div>` : '';
+    const year = item.year ? `<div class="detail-row"><strong>YEAR</strong><span>${escapeHtml(item.year)}</span></div>` : '';
+    const blurb = item.description ? `<p class="modal-blurb">${escapeHtml(item.description)}</p>` : `<p class="modal-blurb empty-blurb">NO BLURB YET</p>`;
+
+    content.innerHTML = `
+      <div class="media-detail-layout">
+        ${img}
+        <div class="media-detail-copy">
+          <p class="modal-kicker">${escapeHtml(item.type || '')}</p>
+          <h2>${escapeHtml(item.title)}</h2>
+          <div class="detail-list">${year}${rating}${mood}</div>
+          ${blurb}
+          ${trailerMarkup(item)}
+          ${galleryMarkup(item)}
+          <div class="badges">${tags}</div>
+        </div>
+      </div>
+    `;
+
+    modal.classList.add('open');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+  }
+
+  function closeMediaModal() {
+    const modal = document.getElementById('mediaModal');
+    if (!modal) return;
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeMediaModal();
+  });
+
+  window.HB_MEDIA = {
+    data: hbData,
+    media,
+    escapeHtml,
+    mediaCard,
+    nowMiniCard,
+    openMediaModal,
+    closeMediaModal
+  };
+  window.openMediaModal = openMediaModal;
+  window.closeMediaModal = closeMediaModal;
+})();

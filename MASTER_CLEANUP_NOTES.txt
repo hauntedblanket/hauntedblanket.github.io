@@ -1,11 +1,12 @@
-HAUNTED BLANKET MASTER CLEAN
+Haunted Blanket stable cleanup notes
 
-This version removes:
-- old moon emoji hero code
-- visible OWNER/admin links
-- old art/music pages
-- duplicate iframe trailer remnants
-- duplicate moon CSS
+Safe completed work:
+- GitHub Pages root structure fixed.
+- Duplicate recommendation function removed; webhook flow kept.
+- Shared movie/game card and modal logic centralized.
+- Admin Surprise Me leftovers removed.
+- Admin clutter and navigation labels cleaned.
+- Image loading/fallback handling improved.
+- Step 8 tidied code comments/indentation without changing layout.
 
-Use THIS version going forward as the new master base.
-Avoid mixing older ZIP versions back into the project.
+Do not broadly edit height/overflow CSS yet. The scroll system is fragile and should be handled only in a dedicated future pass.

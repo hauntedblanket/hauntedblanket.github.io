@@ -14,15 +14,25 @@
       <strong>HAUNTED BLANKET</strong>
       <span>OWNER DASHBOARD</span>
     </div>
-    <nav>
-      <a href="index.html">VIEW SITE</a>
-      <a href="#dashboard">DASHBOARD</a>
-      <a href="#moviesAdmin">MOVIES</a>
+    <nav class="admin-main-nav" aria-label="Admin navigation">
+      <a href="index.html" class="nav-primary">VIEW SITE</a>
+      <a href="#dashboard" class="nav-primary">DASHBOARD</a>
+
+      <span class="nav-group-label">ADD NEW</span>
       <a href="#addMoviePanel">ADD MOVIE</a>
       <a href="#addGamePanel">ADD GAME</a>
+      <a href="#socials">ADD SOCIAL</a>
+
+      <span class="nav-group-label">MANAGE LIBRARY</span>
+      <a href="#moviesAdmin">MOVIES</a>
       <a href="#gamesAdmin">GAMES</a>
-      <a href="#socials">SOCIALS</a>
+      <a href="#favoritesAdmin">FAVORITES</a>
+      <a href="#watchlistAdmin">WATCH LIST</a>
+      <a href="#unratedAdmin">UNRATED</a>
+
+      <span class="nav-group-label">TOOLS</span>
       <a href="#design">SITE TEXT</a>
+      <a href="#backupPanel">BACKUPS</a>
       <a href="#export">EXPORT</a>
     </nav>
   </aside>
@@ -37,35 +47,22 @@
         <button type="button" class="btn mini-btn" id="viewModeToggle" onclick="toggleViewMode()">PUBLIC VIEW</button>
         <button type="button" class="btn mini-btn" id="quickAddMovieBtn" onclick="showAddPanel('movie')">ADD MOVIE</button>
         <button type="button" class="btn mini-btn" id="quickAddGameBtn" onclick="showAddPanel('game')">ADD GAME</button>
-        <button type="button" class="btn mini-btn" onclick="openQuickAdd()">QUICK ADD</button>
+        <button type="button" class="btn mini-btn" onclick="openQuickAdd()">FAST ENTRY</button>
         <button type="button" class="btn mini-btn" onclick="downloadNow()">EXPORT DATA.JS</button>
         <button type="button" class="btn mini-btn" id="densityToggle" onclick="toggleDensity()">COMPACT MODE</button>
-        <button type="button" class="btn mini-btn" onclick="surpriseMe()">SURPRISE ME</button>
         <span class="undo-status" id="lastExportStatus">NOT EXPORTED THIS SESSION</span>
         <button type="button" class="btn mini-btn" id="undoBtn" onclick="undoLastAction()" disabled>UNDO</button>
         <span class="undo-status" id="undoStatus">NO UNDO HISTORY</span>
         <span class="undo-status">CTRL+V TO PASTE COVER IMAGES</span>
       </div>
     </section>
-
-    <section class="panel" id="howto">
-      <div class="section-header">
-        <h2>NO-API SETUP</h2>
-        <p>MANUAL, PRIVATE, SIMPLE</p>
-      </div>
-      <p class="notice">
-        ADD ITEMS BELOW, DRAG AND DROP COVERS OR IMAGES, THEN EXPORT THE UPDATED <strong>DATA.JS</strong> FILE. NO API KEYS OR SUBSCRIPTIONS NEEDED.
-      </p>
-    </section>
-
-    <section class="dashboard-cards">
+<section class="dashboard-cards">
       <a class="dash-card" href="#moviesAdmin"><strong>MOVIES</strong><span id="movieCount">0 ITEMS</span></a>
       <a class="dash-card" href="#gamesAdmin"><strong>GAMES</strong><span id="gameCount">0 ITEMS</span></a>
       <a class="dash-card" href="#socials"><strong>SOCIALS</strong><span id="socialCount">0 LINKS</span></a>
       <a class="dash-card" href="#favoritesAdmin"><strong>FAVORITES</strong><span id="favoriteCount">0 ITEMS</span></a>
       <a class="dash-card" href="#watchlistAdmin"><strong>WATCH LIST</strong><span id="watchlistCount">0 ITEMS</span></a>
       <a class="dash-card" href="#unratedAdmin"><strong>UNRATED</strong><span id="unratedCount">0 ITEMS</span></a>
-      <a class="dash-card" href="#customSectionsPanel"><strong>SECTIONS</strong><span>CUSTOM GROUPS</span></a>
       <a class="dash-card" href="#export"><strong>EXPORT</strong><span>DOWNLOAD DATA.JS</span></a>
     </section>
 
@@ -80,6 +77,16 @@
         <button type="button" class="easy-action-card button-card" onclick="saveSettingsAndExport()"><strong>SAVE + DOWNLOAD</strong><span>EXPORT DATA.JS</span></button>
       </div>
       <p class="notice easy-reminder">AFTER EDITING: CLICK SAVE + DOWNLOAD DATA.JS, THEN REPLACE YOUR PROJECT DATA.JS.</p>
+    </section>
+
+    <section class="panel no-collapse admin-flow-panel" id="adminFlow">
+      <div class="section-header"><h2>ADMIN FLOW</h2><p>THE SIMPLE ORDER TO USE THIS PAGE</p></div>
+      <div class="admin-flow-grid">
+        <a href="#addMoviePanel"><strong>1. ADD</strong><span>CREATE MOVIES, GAMES, OR SOCIAL LINKS.</span></a>
+        <a href="#moviesAdmin"><strong>2. MANAGE</strong><span>SEARCH, EDIT, FAVORITE, FEATURE, OR REMOVE.</span></a>
+        <a href="#design"><strong>3. TEXT</strong><span>UPDATE HEADINGS, SUBTITLES, AND FOOTER WORDING.</span></a>
+        <a href="#export"><strong>4. EXPORT</strong><span>DOWNLOAD DATA.JS AND REPLACE THE OLD FILE.</span></a>
+      </div>
     </section>
 
 
@@ -183,7 +190,7 @@
 
     <section class="admin-grid" id="media" style="margin-top:18px">
       <div class="panel">
-        <div class="section-header"><h2>EDIT SELECTED ITEM</h2><p>USED WHEN YOU CLICK FORM EDIT ON A CARD</p></div>
+        <div class="section-header"><h2>EDIT FORM</h2><p>OPEN MANAGE ON A CARD, THEN CLICK FORM EDIT</p></div>
         <div class="admin-tools sticky-toolbar">
           <label class="field">SEARCH LIBRARY<input id="mediaSearch" placeholder="SEARCH TITLE, TAG, MOOD..." oninput="renderAll()"></label>
           <label class="field">SORT LIBRARY<select id="mediaSort" onchange="renderAll()">
@@ -234,11 +241,7 @@
         <div class="button-row"><button type="button" class="btn" id="saveEntryBtn" onclick="addEntry()">ADD ENTRY</button><button type="button" class="btn" onclick="resetForm()">RESET</button></div>
       </div>
     </section>
-
-    <section class="admin-grid" style="margin-top:18px">
-    </section>
-
-    <section class="panel" id="collectionHealthPanel" style="margin-top:18px">
+<section class="panel" id="collectionHealthPanel" style="margin-top:18px">
       <div class="section-header"><h2>COLLECTION HEALTH</h2><p>UNFINISHED OR INCOMPLETE ENTRIES</p></div>
       <div class="health-grid" id="healthGrid"></div>
     </section>
@@ -246,8 +249,8 @@
     
 <section class="panel no-collapse" id="homepageControls">
   <div class="section-header">
-    <h2>HOME PAGE CONTROLS</h2>
-    <p>CONTROL FEATURED CONTENT</p>
+    <h2>HOMEPAGE RULES</h2>
+    <p>HOW ITEMS APPEAR ON THE HOME PAGE</p>
   </div>
 
   <div class="dashboard-grid compact-dashboard-grid">
@@ -277,38 +280,9 @@
 
 
 <div class="admin-reminder">
-TIP: USE SEARCH TO QUICKLY FIND MOVIES, GAMES, OR SOCIALS TO EDIT.
+TIP: USE THE SIDEBAR OR QUICK ADMIN CARDS TO JUMP AROUND WITHOUT SCROLLING.
 </div>
-
-<section class="panel media-library" id="favoritesFocusPanel" style="margin-top:18px">
-      <div class="section-header"><h2>FAVORITES FOCUS</h2><p>YOUR MOST IMPORTANT ENTRIES</p></div>
-      <div class="poster-wall compact-wall" id="favoritesFocusGrid"></div>
-    </section>
-
-    <section class="panel media-library" id="customSectionsPanel" style="margin-top:18px">
-      <div class="section-header"><h2>CUSTOM SECTIONS</h2><p>QUICK VIEWS BASED ON TAGS</p></div>
-      <p class="notice">USE THESE TAGS TO CREATE READY-MADE COLLECTIONS: CURRENTLY PLAYING, OCTOBER WATCHES, COMFORT MOVIE, BEST ATMOSPHERE.</p>
-      <div class="custom-section-grid">
-        <div>
-          <h3 class="mini-heading">CURRENTLY PLAYING</h3>
-          <div class="poster-wall compact-wall" id="currentlyPlayingGrid"></div>
-        </div>
-        <div>
-          <h3 class="mini-heading">OCTOBER WATCHES</h3>
-          <div class="poster-wall compact-wall" id="octoberWatchesGrid"></div>
-        </div>
-        <div>
-          <h3 class="mini-heading">COMFORT PICKS</h3>
-          <div class="poster-wall compact-wall" id="comfortPicksGrid"></div>
-        </div>
-        <div>
-          <h3 class="mini-heading">BEST ATMOSPHERE</h3>
-          <div class="poster-wall compact-wall" id="atmosphereGrid"></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="panel media-library" id="unratedAdmin" style="margin-top:18px">
+<section class="panel media-library" id="unratedAdmin" style="margin-top:18px">
       <div class="section-header"><h2>UNRATED ITEMS</h2><p>ITEMS MISSING RATINGS</p></div>
       <div class="poster-wall compact-wall" id="unratedGrid"></div>
     </section>
@@ -402,18 +376,7 @@ TIP: USE SEARCH TO QUICKLY FIND MOVIES, GAMES, OR SOCIALS TO EDIT.
       <div class="button-row"><button type="button" class="btn" onclick="downloadBackupOnly()">DOWNLOAD BACKUP NOW</button></div>
       <div class="backup-list" id="backupList"></div>
     </section>
-
-    <section class="panel" id="deployGuidePanel" style="margin-top:18px">
-      <div class="section-header"><h2>DEPLOY CHECKLIST</h2><p>STATIC SITE EXPORT WORKFLOW</p></div>
-      <div class="deploy-checklist">
-        <p>1. CLICK <strong>DOWNLOAD DATA.JS</strong>.</p>
-        <p>2. REPLACE THE OLD <strong>DATA.JS</strong> IN YOUR SITE FOLDER.</p>
-        <p>3. KEEP THE REST OF THE FILES TOGETHER: INDEX, MOVIES, GAMES, SOCIALS, STYLE, SITE, ADMIN.</p>
-        <p>4. UPLOAD THE WHOLE FOLDER TO NETLIFY, GITHUB PAGES, OR YOUR HOST.</p>
-      </div>
-    </section>
-
-    <section class="panel" id="export" style="margin-top:18px">
+<section class="panel" id="export" style="margin-top:18px">
       <div class="section-header"><h2>EXPORT DATA</h2><p>REPLACE YOUR DATA.JS WITH THIS</p></div>
       <p class="notice">AFTER ADDING ITEMS, CLICK EXPORT. SAVE THE DOWNLOADED <strong>DATA.JS</strong> FILE INTO YOUR SITE FOLDER, REPLACING THE OLD ONE. THEN REFRESH <strong>INDEX.HTML</strong>.</p>
       <div class="button-row"><button type="button" class="btn" onclick="exportData()">DOWNLOAD DATA.JS</button><button type="button" class="btn" onclick="copyData()">COPY DATA.JS TEXT</button><button type="button" class="btn" onclick="clearDraft()">CLEAR DRAFT</button></div>
@@ -493,6 +456,10 @@ TIP: USE SEARCH TO QUICKLY FIND MOVIES, GAMES, OR SOCIALS TO EDIT.
     return String(text).replace(/[&<>'"]/g, c => ({
       '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
     }[c]));
+  }
+
+  function imageErrorFallback(text = 'IMAGE MISSING') {
+    return `this.onerror=null;this.outerHTML='<div class=&quot;poster-placeholder&quot;>${escapeHtml(text)}</div>'`;
   }
 
   function normalizeUrl(url = '') {
@@ -725,7 +692,7 @@ TIP: USE SEARCH TO QUICKLY FIND MOVIES, GAMES, OR SOCIALS TO EDIT.
       else gameCoverData = dataUrl;
 
       if (imageInput) imageInput.value = '';
-      preview.innerHTML = `<img class="poster" src="${dataUrl}" alt="${kind} cover preview">`;
+      preview.innerHTML = `<img class="poster" decoding="async" src="${dataUrl}" alt="${kind} cover preview">`;
     }
 
     async function handle(file) {
@@ -771,7 +738,7 @@ TIP: USE SEARCH TO QUICKLY FIND MOVIES, GAMES, OR SOCIALS TO EDIT.
 
         const src = e.target.value.trim();
         preview.innerHTML = src
-          ? `<img class="poster" src="${escapeHtml(src)}" alt="${kind} cover preview">`
+          ? `<img class="poster" loading="lazy" decoding="async" src="${escapeHtml(src)}" alt="${kind} cover preview" onerror="${imageErrorFallback()}">`
           : `<strong>DROP ${kind.toUpperCase()} COVER HERE</strong><span>OR CLICK TO UPLOAD</span>`;
       });
     }
@@ -800,7 +767,7 @@ TIP: USE SEARCH TO QUICKLY FIND MOVIES, GAMES, OR SOCIALS TO EDIT.
       const box = $('coverPreviewBox');
       if (!box) return;
       box.innerHTML = src
-        ? `<img class="poster" src="${src}" alt="PREVIEW">`
+        ? `<img class="poster" loading="lazy" decoding="async" src="${escapeHtml(src)}" alt="PREVIEW" onerror="${imageErrorFallback()}">`
         : `<div class="poster-placeholder"><strong>DROP COVER HERE</strong><span>OR CLICK TO UPLOAD</span></div>`;
     }
 
@@ -1014,7 +981,7 @@ TIP: USE SEARCH TO QUICKLY FIND MOVIES, GAMES, OR SOCIALS TO EDIT.
     uploadedCoverData = '';
     if ($('saveEntryBtn')) $('saveEntryBtn').textContent = 'SAVE CHANGES';
     const box = $('coverPreviewBox');
-    if (box) box.innerHTML = item.image ? `<img class="poster" src="${escapeHtml(item.image)}" alt="PREVIEW">` : `<div class="poster-placeholder">NO IMAGE</div>`;
+    if (box) box.innerHTML = item.image ? `<img class="poster" loading="lazy" decoding="async" src="${escapeHtml(item.image)}" alt="PREVIEW" onerror="${imageErrorFallback()}">` : `<div class="poster-placeholder">NO IMAGE</div>`;
     $('media')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
@@ -1234,16 +1201,7 @@ TIP: USE SEARCH TO QUICKLY FIND MOVIES, GAMES, OR SOCIALS TO EDIT.
     save();
   }
 
-  function surpriseMe() {
-    const visible = draft.media.filter(item => !item.archived);
-    if (!visible.length) return alert('NO ITEMS YET.');
-    const pick = visible[Math.floor(Math.random() * visible.length)];
-    alert(`SURPRISE PICK:\n\n${pick.title || 'UNTITLED'}${pick.rating ? '\nRATING: ' + pick.rating : ''}${pick.description ? '\n\n' + pick.description : ''}`);
-  }
-
-  
-  
-  function resetSocialForm() {
+function resetSocialForm() {
     ['socialName','socialPlatform','socialType','socialUrl','socialAvatar','socialNotes'].forEach(id => {
       const el = $(id);
       if (el) el.value = '';
@@ -1351,7 +1309,7 @@ function renderTagManager() {
     const tags = (item.tags || []).map(t => `<span class="badge">${escapeHtml(t)}</span>`).join('');
     const tagText = (item.tags || []).join(', ');
     const img = item.image
-      ? `<img loading="lazy" class="poster" src="${escapeHtml(item.image)}" alt="">`
+      ? `<img loading="lazy" decoding="async" class="poster" src="${escapeHtml(item.image)}" alt="${escapeHtml(item.title || 'cover')}" onerror="${imageErrorFallback('IMAGE MISSING')}">`
       : '<div class="poster-placeholder">DROP IMAGE</div>';
 
     const ratingButtons = item.type === 'movie'
@@ -1502,7 +1460,7 @@ function renderTagManager() {
         <div class="social-admin-head">
           ${
             s.avatar
-              ? `<img src="${escapeHtml(s.avatar)}" alt="${escapeHtml(s.title || s.name || '')}">`
+              ? `<img loading="lazy" decoding="async" src="${escapeHtml(s.avatar)}" alt="${escapeHtml(s.title || s.name || '')}" onerror="this.style.display='none'">`
               : '<div class="social-admin-avatar-placeholder">✦</div>'
           }
           <div>

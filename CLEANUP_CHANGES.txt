@@ -1,0 +1,9 @@
+Haunted Blanket cleanup status
+
+Step 8: code hygiene pass
+- Preserved public layout, scroll behavior, webhook, data, and admin flow.
+- Tidied site.js section labels and indentation.
+- Removed noisy visitor-facing console error logging from recommendation failure handling.
+- No CSS layout or scroll rules were changed.
+
+Keep testing locally before pushing to GitHub.
