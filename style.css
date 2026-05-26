@@ -2572,3 +2572,200 @@ nav a,
     line-height: 1.8 !important;
   }
 }
+/* HOMEPAGE LAYOUT REWRITE - isolated fix
+   Keeps public styling, but removes the fragile homepage overlap/scroll coupling. */
+body[data-page="home"] .split-panel {
+  display: grid !important;
+  grid-template-columns: minmax(320px, 0.9fr) minmax(420px, 1.35fr) !important;
+  gap: 18px !important;
+  align-items: start !important;
+  overflow: visible !important;
+}
+
+body[data-page="home"] .split-featured {
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+  display: block !important;
+}
+
+body[data-page="home"] .featured-split-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: 18px !important;
+}
+
+body[data-page="home"] .featured-mini-panel {
+  min-height: 0 !important;
+  height: auto !important;
+  display: block !important;
+  overflow: visible !important;
+}
+
+body[data-page="home"] .featured-small-grid {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  align-items: start !important;
+  min-height: 0 !important;
+}
+
+body[data-page="home"] .featured-small-grid .card,
+body[data-page="home"] .featured-small-grid .media-card {
+  max-width: 360px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+}
+
+body[data-page="home"] .featured-small-grid img,
+body[data-page="home"] .featured-small-grid .poster {
+  width: 100% !important;
+  max-height: 430px !important;
+  object-fit: cover !important;
+}
+
+body[data-page="home"] .split-recent {
+  height: 800px !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+body[data-page="home"] .split-recent .section-header {
+  flex: 0 0 auto !important;
+}
+
+body[data-page="home"] #recentGrid.recent-grid,
+body[data-page="home"] .split-recent .recent-grid {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  grid-auto-rows: auto !important;
+  align-content: start !important;
+  padding-right: 8px !important;
+  padding-bottom: 32px !important;
+}
+
+body[data-page="home"] #recentGrid .card,
+body[data-page="home"] #recentGrid .media-card {
+  max-width: 250px !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+}
+
+body[data-page="home"] #recentGrid img,
+body[data-page="home"] #recentGrid .poster {
+  max-height: 350px !important;
+  object-fit: cover !important;
+}
+
+@media (max-width: 900px) {
+  body[data-page="home"] .split-panel {
+    grid-template-columns: 1fr !important;
+  }
+
+  body[data-page="home"] .split-featured,
+  body[data-page="home"] .split-recent {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  body[data-page="home"] #recentGrid.recent-grid,
+  body[data-page="home"] .split-recent .recent-grid {
+    max-height: none !important;
+    overflow: visible !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    padding-right: 0 !important;
+  }
+
+  body[data-page="home"] .featured-small-grid .card,
+  body[data-page="home"] .featured-small-grid .media-card {
+    max-width: 300px !important;
+  }
+
+  body[data-page="home"] .featured-small-grid img,
+  body[data-page="home"] .featured-small-grid .poster {
+    max-height: 400px !important;
+  }
+}
+
+@media (max-width: 620px) {
+  body[data-page="home"] #recentGrid.recent-grid,
+  body[data-page="home"] .split-recent .recent-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* HOMEPAGE GAP FIX: match recent panel height to featured column without changing collection page scrollbars */
+body[data-page="home"] .split-panel {
+  align-items: stretch !important;
+}
+
+body[data-page="home"] .split-panel > .panel {
+  height: auto !important;
+}
+
+body[data-page="home"] .split-featured,
+body[data-page="home"] .split-recent {
+  height: auto !important;
+  min-height: 0 !important;
+}
+
+body[data-page="home"] .split-recent {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+body[data-page="home"] .split-recent .card-grid {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  max-height: none !important;
+  overflow-y: auto !important;
+  padding-right: 8px !important;
+}
+
+@media (max-width: 900px) {
+  body[data-page="home"] .split-featured,
+  body[data-page="home"] .split-recent {
+    height: auto !important;
+  }
+
+  body[data-page="home"] .split-recent .card-grid {
+    overflow-y: visible !important;
+    max-height: none !important;
+    padding-right: 0 !important;
+  }
+}
+
+/* HOMEPAGE FINAL: curated 9-item preview, no internal homepage scrollbar.
+   Movies/Games collection pages keep their own scroll rules. */
+body[data-page="home"] .split-panel {
+  align-items: stretch !important;
+}
+
+body[data-page="home"] .split-featured,
+body[data-page="home"] .split-recent {
+  height: auto !important;
+  min-height: 0 !important;
+  overflow: visible !important;
+}
+
+body[data-page="home"] .split-recent {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+body[data-page="home"] #recentGrid.recent-grid,
+body[data-page="home"] .split-recent .recent-grid,
+body[data-page="home"] .split-recent .card-grid {
+  flex: 0 0 auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  overflow-y: visible !important;
+  overflow-x: visible !important;
+  padding-right: 0 !important;
+}

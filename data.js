@@ -14,7 +14,7 @@ window.HAUNTED_BLANKET_DATA = {
     "recentSubtitle": "NEWEST MOVIES, SHOWS, ANIME AND GAMES",
     "featuredHeading": "MAI PICKS",
     "featuredSubtitle": "CHECK EM OUT",
-    "quote": "EVERY NIGHT HAS A STORY.",
+    "quote": "I JUST WANT TO NAP",
     "footer": "HAUNTED BLANKET",
     "moviesHeading": "WATCH",
     "gamesHeading": "GAMES",
