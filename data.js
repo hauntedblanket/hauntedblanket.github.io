@@ -11,7 +11,7 @@ window.HAUNTED_BLANKET_DATA = {
     "collectionHeading": "COLLECTION",
     "collectionSubtitle": "RECOMMEND GAMES AND MOVIES ON THE SOCIAL PAGE!",
     "recentHeading": "RECENTLY ADDED",
-    "recentSubtitle": "NEWEST MOVIES, SHOWS, ANIME AND GAMES",
+    "recentSubtitle": "LAST 9 REVIEWED",
     "featuredHeading": "MAI PICKS",
     "featuredSubtitle": "",
     "quote": "I JUST WANT TO NAP",
@@ -398,7 +398,7 @@ window.HAUNTED_BLANKET_DATA = {
       "type": "social media",
       "url": "https://www.instagram.com/hauntedblanket",
       "category": "my-link",
-      "avatar": "https://ugc.production.linktr.ee/3f2f03e4-09a9-493f-b619-1819a4f927aa_ChatGPT-Image-May-22--2026--06-52-42-PM.png?io=true&size=avatar-v3_0",
+      "avatar": "https://ugc.production.linktr.ee/69c53deb-797e-4109-b0b7-046eed766054_snapchat-11293024.png?io=true&size=avatar-v3_0",
       "notes": ""
     },
     {
