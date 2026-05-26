@@ -403,16 +403,6 @@ footer {
   font-size: 12px
 }
 
-.admin-link {
-  position: fixed;
-  right: 16px;
-  bottom: 16px;
-  color: #756588;
-  text-decoration: none;
-  font: 11px 'Courier New', monospace;
-  letter-spacing: 2px;
-  text-transform: uppercase
-}
 
 @media(max-width:780px) {
   header {
