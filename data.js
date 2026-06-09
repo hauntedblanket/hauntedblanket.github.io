@@ -431,6 +431,15 @@ window.HAUNTED_BLANKET_DATA = {
   ],
   "socials": [
     {
+      "title": "Ko-fi",
+      "platform": "<3",
+      "type": "LINK",
+      "url": "https://ko-fi.com/hauntedblanket",
+      "category": "my-link",
+      "avatar": "https://storage.ko-fi.com/cdn/useruploads/002d0ebc-b4ba-4e95-948a-9d138ed93dae_758769b7-8bc3-462b-a912-3edcb1222853.png",
+      "notes": ""
+    },
+    {
       "title": "Twitter",
       "platform": "<3",
       "type": "LINK",
