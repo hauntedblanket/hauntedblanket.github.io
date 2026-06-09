@@ -412,6 +412,15 @@ window.HAUNTED_BLANKET_DATA = {
   ],
   "socials": [
     {
+      "title": "Twitter",
+      "platform": "<3",
+      "type": "LINK",
+      "url": "https://x.com/hauntedblanket_",
+      "category": "my-link",
+      "avatar": "https://pbs.twimg.com/profile_images/2063618068631396352/mWmxrUdJ_400x400.jpg",
+      "notes": ""
+    },
+    {
       "title": "Test",
       "platform": "test",
       "type": "ets",
